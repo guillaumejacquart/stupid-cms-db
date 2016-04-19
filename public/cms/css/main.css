@@ -1,0 +1,21 @@
+.cms-admin{
+	position:fixed;
+	display:none;
+	top:0;
+	width:100%;
+	background-color: rgba(0,0,0,1);
+    color: white;
+    z-index: 9998;
+	padding: 10px;
+}
+
+.notification {
+	display:none;
+	position:fixed;
+	top: 15px;
+	right: 15px;
+	background-color: rgba(20,150,0,1);
+    z-index: 9999;
+	padding: 10px;
+	color:white;
+}
