@@ -71,13 +71,10 @@ router.post('/edit', auth, function(req, res, next) {
 		if(req.body){
 			var file = fs.readFileSync(filepath, 'utf8');
 			$ = cheerio.load(file);
-				
-			var elem = $('#' + req.body.id);
-			if(!elem.length){
-				console.log('elem not exist. getting it with index : ' + req.body.index);
-				elem = $($('.editable').get(req.body.index));
-				elem.attr('id', req.body.id);
-			}
+			
+			elem = $($('.editable').get(req.body.index));
+			elem.attr('id', req.body.id);
+			
 			elem.html(req.body.innerHtml);
 			for (var a in req.body.attrs){
 				if(a == 'id'){				
