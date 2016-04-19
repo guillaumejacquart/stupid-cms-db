@@ -13,7 +13,6 @@ fs.readFile(config, (err, data) => {
 	if (err) throw err;
 	
 	var config = JSON.parse(data);
-	console.log(config);
 	if(config.authorization.type == "basic"){
 		username = config.authorization.username;
 		password = config.authorization.password;
