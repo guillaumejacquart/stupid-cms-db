@@ -14,6 +14,6 @@
     "express": "~4.13.1",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
-    "stupid-cms": "0.0.1"
+    "stupid-cms": "0.0.4"
   }
 }

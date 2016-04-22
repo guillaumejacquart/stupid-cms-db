@@ -51,9 +51,9 @@ $(document).ready(function(){
 		}
 		
 		function initTinymce(){
-			tinymce.remove('.editable:not(img)');
+			tinymce.remove('.editable');
 			tinymce.init({
-				selector: '.editable:not(img)',
+				selector: '.editable',
 				inline: true,
 				toolbar: 'undo redo image link paste',
 				menubar: false,
@@ -80,13 +80,6 @@ $(document).ready(function(){
 		/**
 		* Gets an XPath for an element which describes its hierarchical location.
 		*/
-		var getElementXPath = function(element) {
-			if (element && element.id)
-				return '//*[@id="' + element.id + '"]';
-			else
-				return getElementTreeXPath(element);
-		};
-
 		var getElementTreeXPath = function(element) {
 			var paths = [];
 
@@ -111,7 +104,7 @@ $(document).ready(function(){
 			return paths.length ? "/" + paths.join("/") : null;
 		};
 		
-		$('body p, span, div').on('dblclick', '*:not(:has(*), .editable)', function(){
+		$('body p, span, div, img').on('dblclick', '*:not(:has(*), .editable)', function(){
 			var xpath = getElementTreeXPath(this);
 			var elem = this;
 			
