@@ -1,14 +1,15 @@
 $(document).ready(function(){
 	
 	
-	$.get('/user', function(response){
+	$.get('/stupid-cms/user', function(response){
 		if(response){
-			$('head').append('<link href="/cms/css/main.css" type="text/css" rel="stylesheet />')
+			
+			$('head').append('<link href="/stupid-cms/css/main.css" type="text/css" rel="stylesheet" />')
 			$('body').append('<div class="cms-admin">Bonjour '+response+'</div>')
 				.append('<div class="notification"></div>');
 			
 			var script = document.createElement('script');
-			script.src = "/cms/js/tinymce/tinymce.min.js";
+			script.src = "/stupid-cms/js/tinymce/tinymce.min.js";
 			script.onload = function () {
 				tinymce.init({
 					selector: '.editable:not(img)',
@@ -38,7 +39,7 @@ $(document).ready(function(){
 						};
 						
 						$.ajax({
-							url:'/edit',
+							url:'/stupid-cms/edit',
 							type:"POST",
 							data: JSON.stringify(data),
 							contentType:"application/json; charset=utf-8",

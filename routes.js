@@ -5,20 +5,9 @@ var cheerio = require('cheerio')
 var router = express.Router();
 var url = require("url");
 var path = require("path");
+var mkdirp = require('mkdirp');
 
-var username, password;
-
-var config = path.join(__dirname, '/../bin/config.js')
-fs.readFile(config, (err, data) => {
-	if (err) throw err;
-	
-	var config = JSON.parse(data);
-	if(config.authorization.type == "basic"){
-		username = config.authorization.username;
-		password = config.authorization.password;
-	}
-});
-
+var options;
 
 /* GET user infos. */
 router.get('/user', function(req, res, next) {
@@ -37,7 +26,7 @@ var auth = function (req, res, next) {
 		return unauthorized(res);
 	};
 
-	if (user.name === username && user.pass === password) {
+	if (user.name === options.auth.username && user.pass === options.auth.password) {
 		return next();
 	} else {
 		return unauthorized(res);
@@ -64,8 +53,8 @@ router.post('/edit', auth, function(req, res, next) {
 	}	
 	var fileArchive = new Date().getTime() + '-' + file;
 	
-	var filepath = path.join(__dirname, '/../site/', file);
-	var filepathArchive = path.join(__dirname, '/../archives/', fileArchive);
+	var filepath = path.join(options.sitePath, file);
+	var filepathArchive = path.join(options.archivesPath, fileArchive);
 	
 	fs.access(filepath, fs.F_OK, function(){
 		if(req.body){
@@ -82,19 +71,37 @@ router.post('/edit', auth, function(req, res, next) {
 				}
 			}
 			
-			fs.copy(filepath, filepathArchive, { replace: false }, function (err) {
-				if (err) {
-					throw err;
-				}
-				console.log("archived in file : " + filepathArchive);		
-				fs.writeFile(filepath, $.html(), 'utf8', function (err) {
-					if (err) return console.log(err);
-				});
-			});
+			if(options.archivesPath){		
+				saveArchives(filepath, filepathArchive, $.html());
+			}
 		}
 		
 		res.json({status: 'OK'});
 	})	
 });
 
-module.exports = router;
+function saveArchives(filepath, filepathArchive, html){	
+	fs.copy(filepath, filepathArchive, { replace: true }, function (err) {
+		if (err) {
+			throw err;
+		}
+		console.log("archived in file : " + filepathArchive);		
+		fs.writeFile(filepath, html, 'utf8', function (err) {
+			if (err) return console.log(err);
+		});
+	});
+}
+
+module.exports = function(auth){
+	options = auth;
+	
+	if(options.archivesPath){		
+		mkdirp(options.archivesPath, function(err) { 	
+			if(err){
+				throw err;
+			}
+		});
+	}
+	
+	return router;
+}
