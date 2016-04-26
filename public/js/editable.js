@@ -26,7 +26,7 @@ $(document).ready(function(){
 						data = {
 							id: elem.id, 
 							index: $(elem).index('.editable'), 
-							innerHtml: elem.innerHTML.trim(),
+							innerHtml: elem.innerHTML,
 							attrs: attrs
 						};
 						
