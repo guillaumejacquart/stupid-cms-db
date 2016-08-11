@@ -1,6 +1,6 @@
 {
-  "name": "stupid-cms",
-  "version": "0.4.0",
+  "name": "stupid-cms-db",
+  "version": "0.0.1",
   "private": false,
   "scripts": {
     "start": "node ./bin/www"
@@ -13,6 +13,7 @@
     "jquery": "^2.2.3",
     "mkdirp": "^0.5.1",
     "morgan": "~1.6.1",
+    "nedb": "^1.8.0",
     "xmldom": "^0.1.22",
     "xpath": "0.0.23"
   },
@@ -21,7 +22,7 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Ghiltoniel/stupid-cms.git"
+    "url": "git+https://github.com/guillaumejacquart/stupid-cms-db.git"
   },
   "keywords": [
     "static",
@@ -32,7 +33,7 @@
   "author": "Guillaume Jacquart <guillaume.jacquart@live.fr>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Ghiltoniel/stupid-cms/issues"
+    "url": "https://github.com/guillaumejacquart/stupid-cms-db/issues"
   },
-  "homepage": "https://github.com/Ghiltoniel/stupid-cms#readme"
+  "homepage": "https://github.com/guillaumejacquart/stupid-cms-db#readme"
 }
