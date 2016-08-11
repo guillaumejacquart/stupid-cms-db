@@ -9,27 +9,34 @@ var Datastore = require('nedb')
 module.exports = function(options, app) {
 	
 	app.use('/stupid-cms', express.static(path.join(__dirname, 'public')));
-	
-	app.use(express.static(options.sitePath, {
-		extensions: [],
-		index: false
-	}));
-	
+		
 	var router = express.Router();
-	router.get('/:page', function (req, res, next) {
-		console.log(req.params.page);
-		var filepath = path.join(options.sitePath, req.params.page + '.html');
+	router.get('/:page?', function (req, res, next) {
+		var page = req.params.page;
+		if(!page && options.index){
+			page = options.index;
+		}
+		
+		if(!page.endsWith('.html')){
+			next();
+		}
+		
+		var filepath = path.join(options.sitePath, page);
 	
 		fs.access(filepath, fs.F_OK, function(){
 			if(req.body){
 				fs.readFile(filepath, 'utf8', function(err, data){
-					console.log(data);
 					$ = cheerio.load(data);
 					
-					db.find({}, function (err, docs) {
+					db.find({page: page}, function (err, docs) {
 						docs.forEach(function(d){
 							elem = $('#' + d.id);							
 							elem.html(d.html);
+							if(d.attrs){
+								d.attrs.forEach(function(a){
+									elem.attr(a.name, a.value);
+								});
+							}
 						});
 						res.status(200).send($.html());
 					});
@@ -38,6 +45,11 @@ module.exports = function(options, app) {
 		})	
 	});
 	app.use(router);
+	
+	app.use(express.static(options.sitePath, {
+		extensions: [],
+		index: false
+	}));
 	
 	options.db = db;
 	var routes = require('./routes')(options);

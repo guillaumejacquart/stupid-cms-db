@@ -53,15 +53,22 @@ router.post('/edit', auth, function(req, res, next) {
 		file += '.html';
 	}
 	
+	if(req.body.attrs){
+		var handledAttributes = req.body.attrs.filter(function(a){
+			return ['src'].indexOf(a.name) !== -1;
+		});
+	}
+	
 	var content = {
 		id: req.body.id,
-		html: req.body.innerHtml
+		html: req.body.innerHtml,
+		attrs: handledAttributes,
+		page: file
 	}
 	
 	db.find({id: content.id}, function (err, docs) {
 		if(docs.length){	
-			db.update({ id: content.id }, { $set: { html: content.html } }, {}, function (err, numReplaced) {
-				console.log('update : ' + numReplaced);
+			db.update({ id: content.id }, { $set: content }, {}, function (err, numReplaced) {
 				res.status(200).json({ id: content });
 			});
 		} else {

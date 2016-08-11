@@ -19,7 +19,7 @@ var sitePath = path.join(__dirname, 'site');
 var archivesPath = path.join(__dirname, 'archives');
 cms({
 	sitePath: sitePath,
-	archivesPath: archivesPath,
+	index: 'index.html',
 	auth: {
 		type: 'basic',
 		username: 'login',
