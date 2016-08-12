@@ -8,7 +8,7 @@ var Datastore = require('nedb')
 
 module.exports = function(options, app) {
 	
-	app.use('/stupid-cms', express.static(path.join(__dirname, 'public')));
+	app.use('/cms', express.static(path.join(__dirname, 'public')));
 		
 	var router = express.Router();
 	router.get('/:page?', function (req, res, next) {
@@ -17,6 +17,7 @@ module.exports = function(options, app) {
 			page = options.index;
 		}
 		
+		console.log('requesting page : ' + page);
 		if(!page.endsWith('.html')){
 			next();
 		}
@@ -44,6 +45,7 @@ module.exports = function(options, app) {
 			}			
 		})	
 	});
+	
 	app.use(router);
 	
 	app.use(express.static(options.sitePath, {
@@ -53,5 +55,5 @@ module.exports = function(options, app) {
 	
 	options.db = db;
 	var routes = require('./routes')(options);
-	app.use('/stupid-cms', routes);
+	app.use('/cms', routes);
 };

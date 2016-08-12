@@ -1,15 +1,15 @@
 $(document).ready(function(){
 	
 	
-	$.get('/stupid-cms/user', function(response){
+	$.get('/cms/user', function(response){
 		if(response){
 			
-			$('head').append('<link href="/stupid-cms/css/main.css" type="text/css" rel="stylesheet" />')
+			$('head').append('<link href="/cms/css/main.css" type="text/css" rel="stylesheet" />')
 			$('body').append('<div class="cms-admin">Bonjour '+response+'</div>')
 				.append('<div class="notification"></div>');
 			
 			var script = document.createElement('script');
-			script.src = "/stupid-cms/js/tinymce/tinymce.min.js";
+			script.src = "/cms/js/tinymce/tinymce.min.js";
 			script.onload = function () {
 				initTinymce();
 				
@@ -30,7 +30,7 @@ $(document).ready(function(){
 						};
 						
 						$.ajax({
-							url:'/stupid-cms/edit',
+							url:'/cms/edit',
 							type:"POST",
 							data: JSON.stringify(data),
 							contentType:"application/json; charset=utf-8",
@@ -76,9 +76,7 @@ $(document).ready(function(){
 			return attributes;
 		}
 		
-		/**
-		* Gets an XPath for an element which describes its hierarchical location.
-		*/
+		/* 
 		var getElementTreeXPath = function(element) {
 			var paths = [];
 
@@ -108,7 +106,7 @@ $(document).ready(function(){
 			var elem = this;
 			
 			$.ajax({
-				url:'/stupid-cms/make-editable',
+				url:'/cms/make-editable',
 				type:"POST",
 				data: JSON.stringify({xpath: xpath}),
 				contentType:"application/json; charset=utf-8",
@@ -125,7 +123,7 @@ $(document).ready(function(){
 				}
 			});
 			
-		});
+		}); */
 
 	});	
 		

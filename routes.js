@@ -34,8 +34,8 @@ var auth = function (req, res, next) {
 	};
 };
 
-/* GET admin page. */
-router.get('/admin', auth, function(req, res, next) {
+/* Force login page. */
+router.get('/login', auth, function(req, res, next) {
 	res.redirect('/');
 });
 
