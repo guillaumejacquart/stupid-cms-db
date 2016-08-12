@@ -1,6 +1,12 @@
 # Stupid CMS
 A stupidly simple CMS to make static sites editable without compromising your original static files.
 
+## Demo
+Live demo : [Stupid-CMS demo](http://stupid-cms.dynalias.org/)
+To edit the content, go to : [http://stupid-cms.dynalias.org/cms/login](http://stupid-cms.dynalias.org/cms/login) and use the credentials :
+* login : login
+* password : password
+
 ## Getting Started
 There is two ways you can get started with Stupid-CMS : from the sample in this repository or using the express middleware
 ### From the sample
@@ -13,13 +19,13 @@ var app = express();
 ...
 var sitePath = path.join(__dirname, 'site');
 cms({
-		sitePath: sitePath,
-		index: 'index.html',
-		auth: {
-			type: 'basic',
-			username: 'login',
-			password: 'password'
-		}
+	sitePath: sitePath,
+	index: 'index.html',
+	auth: {
+		type: 'basic',
+		username: 'login',
+		password: 'password'
+	}
 }, app);
 ```
  5. Put your website static files in ./site
