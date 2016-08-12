@@ -1,6 +1,6 @@
 {
-  "name": "mam-site2",
-  "version": "0.0.0",
+  "name": "stupid-cms-db-sample",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"

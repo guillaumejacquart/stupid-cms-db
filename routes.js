@@ -60,20 +60,20 @@ router.post('/edit', auth, function(req, res, next) {
 	}
 	
 	var content = {
-		id: req.body.id,
+		name: req.body.name,
 		html: req.body.innerHtml,
 		attrs: handledAttributes,
 		page: file
 	}
 	
-	db.find({id: content.id}, function (err, docs) {
+	db.find({name: content.name}, function (err, docs) {
 		if(docs.length){	
-			db.update({ id: content.id }, { $set: content }, {}, function (err, numReplaced) {
-				res.status(200).json({ id: content });
+			db.update({ name: content.name }, { $set: content }, {}, function (err, numReplaced) {
+				res.status(200).json(content);
 			});
 		} else {
 			db.insert(content, function (err, newDoc) {
-				res.status(200).json({ id: req.body.id });
+				res.status(200).json(content);
 			});
 		}
 	})

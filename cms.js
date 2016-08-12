@@ -30,7 +30,7 @@ module.exports = function(options, app) {
 					
 					db.find({page: page}, function (err, docs) {
 						docs.forEach(function(d){
-							elem = $('#' + d.id);							
+							elem = $('[data-content="' + d.name + '"]');							
 							elem.html(d.html);
 							if(d.attrs){
 								d.attrs.forEach(function(a){

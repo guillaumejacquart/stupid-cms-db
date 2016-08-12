@@ -13,19 +13,18 @@ $(document).ready(function(){
 			script.onload = function () {
 				initTinymce();
 				
-				$('body').on('click', '.editable', function(){
+				$('body').on('click', '[data-content]', function(){
 						if(!$(this).is('img')){
 							return;
 						}
 					})
 				
-					.on('blur', '.editable', function(){
+					.on('blur', '[data-content]', function(){
 						var elem = this;
 						var attrs = getAttributes($(elem));
 											
 						data = {
-							id: elem.id, 
-							index: $(elem).index('.editable'), 
+							name: $(elem).attr('data-content'), 
 							innerHtml: elem.innerHTML,
 							attrs: attrs
 						};
@@ -51,9 +50,9 @@ $(document).ready(function(){
 		}
 		
 		function initTinymce(){
-			tinymce.remove('.editable');
+			tinymce.remove('[data-content]');
 			tinymce.init({
-				selector: '.editable',
+				selector: '[data-content]',
 				inline: true,
 				toolbar: 'undo redo image link paste',
 				menubar: false,
