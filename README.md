@@ -13,13 +13,13 @@ var app = express();
 ...
 var sitePath = path.join(__dirname, 'site');
 cms({
-	sitePath: sitePath,
-	index: 'index.html',
-	auth: {
-		type: 'basic',
-		username: 'login',
-		password: 'password'
-	}
+		sitePath: sitePath,
+		index: 'index.html',
+		auth: {
+			type: 'basic',
+			username: 'login',
+			password: 'password'
+		}
 }, app);
 ```
  5. Put your website static files in ./site
