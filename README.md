@@ -8,13 +8,25 @@ To edit the content, go to : [http://stupid-cms.dynalias.org/cms/login](http://s
 * password : password
 
 ## Getting Started
-There is two ways you can get started with Stupid-CMS : from the sample in this repository or using the express middleware
+There is two ways you can get started with Stupid-CMS : from the CLI or using the express middleware
 ### From the sample
- 1. Clone the repository.
- 2. Go to sample/
+ 1. Install stupid-cms globally.
+ 
+```
+npm install -g stupid-cms
+```
+
+ 2. Setup a new site :
+ 
+```
+stupid-cms setup new_site;
+cd new_site;
+npm install;
+```
+
  3. Open app.js to change your options :
  
-   ```
+```
 var app = express();
 ...
 var sitePath = path.join(__dirname, 'site');
@@ -28,6 +40,7 @@ cms({
 	}
 }, app);
 ```
+
  5. Put your website static files in ./site
  6. Add the ".editable" class and a unique ID to HTML tags you want to make editable. Only leaf tag are recommended
  7. Install the modules and run :
