@@ -41,7 +41,28 @@ To edit the content, go to : <a href="http://stupid-cms.dynalias.org/cms/login">
 <p>There is two ways you can get started with Stupid-CMS : from the CLI or using the express middleware</p>
 
 <h3>
-<a id="from-the-sample" class="anchor" href="#from-the-sample" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>From the sample</h3>
+<a id="using-the-cli-to-serve-your-site-as-editable" class="anchor" href="#using-the-cli-to-serve-your-site-as-editable" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using the cli to serve your site as editable</h3>
+
+<ol>
+<li>Install stupid-cms globally.</li>
+</ol>
+
+<pre><code>npm install -g stupid-cms
+</code></pre>
+
+<ol>
+<li>Go to your static site folder and serve using stupid-cms :</li>
+</ol>
+
+<pre><code>stupid-cms -s --port 3000 --username login --password password [--dir SITEPATH (default to current dir)]
+</code></pre>
+
+<ol>
+<li>Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.</li>
+</ol>
+
+<h3>
+<a id="using-the-cli-to-create-standalone-nodejs-app" class="anchor" href="#using-the-cli-to-create-standalone-nodejs-app" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using the cli to create standalone nodejs app</h3>
 
 <ol>
 <li>Install stupid-cms globally.</li>
