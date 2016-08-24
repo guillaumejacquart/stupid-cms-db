@@ -5,7 +5,6 @@ var cheerio = require('cheerio');
 var router = express.Router();
 var url = require("url");
 var path = require("path");
-var mkdirp = require('mkdirp');
 
 var options,
 	db;

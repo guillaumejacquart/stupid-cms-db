@@ -1,93 +1,23 @@
-# Stupid CMS
-A stupidly simple CMS to make static sites editable without compromising your original static files.
+# Stupid CMS Sample app
 
-## Demo
-Live demo : [Stupid-CMS demo](http://stupid-cms.dynalias.org/)
-To edit the content, go to : [http://stupid-cms.dynalias.org/cms/login](http://stupid-cms.dynalias.org/cms/login) and use the credentials :
-* login : login
-* password : password
-
-## Getting Started
-There is two ways you can get started with Stupid-CMS : from the CLI or using the express middleware
-
-### Using the cli to serve your site as editable
-
- 1. Install stupid-cms globally.
+ 3. Open app.js and change your options :
  
-```
-npm install -g stupid-cms
-```
-
- 2. Go to your static site folder and serve using stupid-cms :
- 
-```
-stupid-cms serve --port 3000 --login login --password password [--path SITEPATH (default to current dir)]
-```
-
- 3. Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
-
-### Using the cli to create standalone nodejs app
- 1. Install stupid-cms globally.
- 
-```
-npm install -g stupid-cms
-```
-
- 2. Setup a new site :
- 
-```
-stupid-cms setup new_site;
-cd new_site;
-npm install;
-```
-
- 3. Open app.js to change your options :
- 
-```
+   ```
 var app = express();
 ...
 var sitePath = path.join(__dirname, 'site');
+var archivesPath = path.join(__dirname, 'archives');
 cms({
-	sitePath: sitePath,
-	index: 'index.html',
-	auth: {
-		type: 'basic',
-		username: 'login',
-		password: 'password'
-	}
-}, app);
+    sitePath: sitePath,
+    archivesPath: archivesPath,
+    auth: {
+    	type: 'basic',
+    	username: 'login',
+    	password: 'password'
+    }, app);
 ```
-
- 4. Put your website static files in ./site
- 5. Add the "data-content" attributes with a unique value.
- 6. Install the modules and run :
+ 5. Put your website static files in ./site
+ 6. Add the ".editable" class to tags you want to make editable. Only leaves tag are recommended
+ 7. Install the modules and run :
 npm install & npm start
- 7. Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
-
-### Using the middleware
-You can add a editable static site to any of your expressjs application using this middleware. Just add one configuration and pass your express app object to the cms :
- ```
-var app = express();
-...
-// This is the path to your website static files
-var sitePath = path.join(__dirname, 'site');
-cms({
-	sitePath: sitePath,
-	index: 'index.html',
-	auth: {
-		type: 'basic',
-		username: 'login',
-		password: 'password'
-	}
-}, app);
-```
-
-
-Then repeat steps 4 to 8 to edit your content
-
-
-Currently only basic auth is supported. More to come...
-## Roadmap
-
- - Add image edition (with upload)
- - Add more authentication configurations
+ 8. Go to '/stupid-cms/admin' and enter your credentials to edit the site.
