@@ -9,16 +9,6 @@ var path = require("path");
 var options,
 	db;
 
-/* GET user infos. */
-router.get('/edition', function(req, res, next) {
-	var user = basicAuth(req);
-	var filepath = path.join(options.sitePath, 'templates');
-	
-	fs.readdir(filepath, function(err, files){
-		res.render('cms-bar.html', { user: user, templates: files });
-	});
-});
-
 var auth = function (req, res, next) {
 	function unauthorized(res) {
 		res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
@@ -36,6 +26,22 @@ var auth = function (req, res, next) {
 		return unauthorized(res);
 	};
 };
+
+/* GET user infos. */
+router.get('/edition', auth, function(req, res, next) {
+	var user = basicAuth(req);
+	var filepath = path.join(options.sitePath, 'templates');
+	
+	fs.readdir(filepath, function(err, files){
+		res.render('cms-bar.html', { user: user, templates: files });
+	});
+});
+
+/* GET user infos. */
+router.get('/user', function(req, res, next) {
+	var user = basicAuth(req);
+	res.json(user);
+});
 
 /* Force login page. */
 router.get('/login', auth, function(req, res, next) {
@@ -67,7 +73,7 @@ router.post('/edit', auth, function(req, res, next) {
 		page: file
 	}
 	
-	db.find({name: content.name}, function (err, docs) {
+	db.find({name: content.name, page: content.page}, function (err, docs) {
 		if(docs.length){
 			if(typeof(req.body.repeatIndex) !== 'undefined'){
 				content.repeats = docs[0].repeats || [];
@@ -106,6 +112,40 @@ router.post('/edit', auth, function(req, res, next) {
 				res.status(200).json(content);
 			});
 		}
+	})
+});
+
+/* POST edit content page. */
+router.post('/remove', auth, function(req, res, next) {
+	var referer = req.get('Referer');
+	var parsed = url.parse(referer);
+	var file = path.basename(parsed.pathname);
+	
+	if(file.length == 0){
+		file = 'index.html';
+	}
+	
+	if(file.indexOf('.html') === -1){
+		file += '.html';
+	}
+	
+	var content = {
+		name: req.body.name,
+		page: file
+	}
+	
+	db.find({name: content.name, page: content.page}, function (err, docs) {
+		if(docs.length){
+			content.repeats = docs[0].repeats || [];
+			var existingRepeat = content.repeats.filter(function(r){ return r.index == req.body.repeatIndex });
+			if(existingRepeat.length > 0){
+				content.repeats.splice(existingRepeat.index, 1);
+			}
+			
+			db.update({ name: content.name }, { $set: content }, {}, function (err, numReplaced) {
+				res.status(200).json(content);
+			});
+		} 
 	})
 });
 

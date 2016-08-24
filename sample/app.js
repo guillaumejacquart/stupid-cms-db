@@ -4,19 +4,16 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var cms = require('stupid-cms');
+var cms = require('../cms');
 
 var app = express();
 
-// uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, 'site', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-var sitePath = path.join(__dirname, 'site');
-var archivesPath = path.join(__dirname, 'archives');
+var sitePath = path.join(__dirname, 'forty');
 cms({
 	sitePath: sitePath,
 	index: 'index.html',

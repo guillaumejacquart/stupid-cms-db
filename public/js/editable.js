@@ -1,16 +1,18 @@
 $(document).ready(function(){
+	
+	$.get('/cms/user', function(response) {
+		if(response){	
 			
-	$.get('/cms/edition', function(response){
-		if(response){
+			$('head').append('<link href="/cms/css/font-awesome.min.css" type="text/css" rel="stylesheet" />');
+			$('head').append('<link href="/cms/css/main.css" type="text/css" rel="stylesheet" />');
 			$('body')
-				.prepend(response)
-				.append('<div class="cms-notification"></div>')
-				.attr('id', 'drag-container');
+				.append('<div class="cms-notification"></div>');
 			
-			$('head').append('<link href="/cms/css/main.css" type="text/css" rel="stylesheet" />' + 
-			'<link href="/cms/css/font-awesome.min.css" type="text/css" rel="stylesheet" />');
-			$('body')
-				.append('<div class="notification"></div>');
+			$.get('/cms/edition', function(response) {
+				if(response){
+					$('body').prepend(response);
+				}
+			});
 			
 			$('.cms-admin-handle').click(function(){
 				$('.cms-admin').toggleClass('extended');
@@ -39,7 +41,7 @@ $(document).ready(function(){
 							attrs: attrs
 						};
 						
-						var html = $(elem).find('.cms-wrapper').html();
+						var html = $(elem).html();
 						if($(elem).attr('data-repeatable') == "true"){
 							data.repeatIndex = $(elem).index('[data-content=' + data.name + ']');
 							data.repeatHtml = html;
@@ -66,32 +68,65 @@ $(document).ready(function(){
 			document.head.appendChild(script);		
 		}
 		
-		function initEditor(){
-			
-			$('[data-content]')
-				.wrapInner('<div class="cms-wrapper"></div>')
-				
-			$('[data-content][data-repeatable]')
-				.append('<div class="cms-duplicate"><span class="fa fa-clone"></span>Dupliquer<span></span></div>');
-			
+		function initEditor(){		
+			initRepeatable();
 			initTinymce();
 			
-			$('body').on('click', '.cms-duplicate', function(){
-				var elem = $(this).closest('[data-repeatable]');
+			$('body').on('click', '.cms-repeat-actions .cms-copy', function(){
+				var elem = $('[data-content][data-repeatable]').eq($(this).closest('.cms-repeat-actions').index('index'));
 				var newElem = elem.clone();
 				$.each(["id", "contenteditable"],function(i,attrName){
 					newElem.removeAttr(attrName);
 				});
 				newElem.removeClass('mce-content-body mce-edit-focus');
 				elem.after(newElem);
+				initRepeatable();
 				initTinymce(newElem);
+			});
+			
+			$('body').on('click', '.cms-repeat-actions .cms-delete', function(){
+				var index = $(this).closest('.cms-repeat-actions').data('index');
+				var elem = $('[data-content][data-repeatable]').eq(index);
+				var data = JSON.stringify({
+					name: elem.attr('data-content'),
+					repeatIndex: index
+				});
+				
+				$.ajax({
+					url:'/cms/remove',
+					type:"POST",
+					data: data,
+					contentType:"application/json; charset=utf-8",
+					dataType:"json",
+					success: function(){
+						notif.html('Content deleted !').fadeIn(500, function(){
+							window.setTimeout(function(){
+								notif.fadeOut(500);
+							}, 2000);
+						});
+					}
+				});
+			});
+		}
+		
+		function initRepeatable(){								
+			$('[data-content][data-repeatable]').each(function(){
+				var elem = $(this);
+				var handle = $('<div class="cms-repeat-actions"><div class="cms-copy"><span class="fa fa-clone"></span>Copy<span></span></div>' + 
+					'<div class="cms-delete"><span class="fa fa-times"></span>Remove<span></span></div></div>');
+				handle.css({
+					top: elem.offset().top,
+					left: elem.width() + elem.offset().left - 100,
+				});
+				handle.data('index', elem.index('[data-content][data-repeatable]'));
+				$('body').append(handle);
 			});
 		}
 		
 		function initTinymce(){			
-			tinymce.remove('.cms-wrapper');
+			tinymce.remove('[data-content]');
 			tinymce.init({
-				selector: '.cms-wrapper',
+				selector: '[data-content]',
 				inline: true,
 				toolbar: 'undo redo image link paste | bold italic underline',
 				menubar: false,

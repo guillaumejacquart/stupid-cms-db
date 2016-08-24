@@ -34,23 +34,19 @@
 	border: 1px dashed #333;
 }
 
-.cms-duplicate {
-	display:none;
+.cms-repeat-actions {
 	position:absolute;
 	top: 0;
 	right: 0;
+    width: 100px;
 	cursor:pointer;
 	color: #eee;
 	padding: 5px;
 	background-color: rgba(0, 0, 0, 0.8);
 }
 
-.cms-duplicate .fa {
+.cms-repeat-actions .fa {
 	margin-right: 5px;
-}
-
-[data-content]:hover .cms-duplicate {
-	display:block;
 }
 
 .cms-notification {

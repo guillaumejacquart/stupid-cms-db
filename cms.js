@@ -70,7 +70,6 @@ module.exports = function(options, app) {
 						});
 						
 						// Add minimal css and js to html.
-						$('head').append('<link href="/cms/css/main.css" type="text/css" rel="stylesheet" />')
 						$('body').append('<script src="/cms/js/editable.js"></script>');
 						
 						res.status(200).send($.html());
