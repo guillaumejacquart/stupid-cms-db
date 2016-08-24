@@ -9,7 +9,24 @@ To edit the content, go to : [http://stupid-cms.dynalias.org/cms/login](http://s
 
 ## Getting Started
 There is two ways you can get started with Stupid-CMS : from the CLI or using the express middleware
-### From the sample
+
+### Using the cli to serve your site as editable
+
+ 1. Install stupid-cms globally.
+ 
+```
+npm install -g stupid-cms
+```
+
+ 2. Go to your static site folder and serve using stupid-cms :
+ 
+```
+stupid-cms serve --port 3000 --login login --password password [--path SITEPATH (default to current dir)]
+```
+
+ 3. Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
+
+### Using the cli to create standalone nodejs app
  1. Install stupid-cms globally.
  
 ```
