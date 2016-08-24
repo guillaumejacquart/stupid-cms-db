@@ -42,7 +42,7 @@ cms({
 ```
 
  4. Put your website static files in ./site
- 5. Add the "cms-content" attributes with a unique value.
+ 5. Add the "data-content" attributes with a unique value.
  6. Install the modules and run :
 npm install & npm start
  7. Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
