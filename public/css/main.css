@@ -27,6 +27,34 @@
 }
 
 .cms-notification {
+[data-content] {
+	position:relative;
+}
+
+[data-content]:hover {
+	border: 1px dashed #333;
+}
+
+.cms-duplicate {
+	display:none;
+	position:absolute;
+	top: 0;
+	right: 0;
+	cursor:pointer;
+	color: #eee;
+	padding: 5px;
+	background-color: rgba(0, 0, 0, 0.8);
+}
+
+.cms-duplicate .fa {
+	margin-right: 5px;
+}
+
+[data-content]:hover .cms-duplicate {
+	display:block;
+}
+
+.notification {
 	display:none;
 	position:fixed;
 	top: 15px;

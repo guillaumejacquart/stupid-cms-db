@@ -65,17 +65,44 @@ router.post('/edit', auth, function(req, res, next) {
 	
 	var content = {
 		name: req.body.name,
-		html: req.body.innerHtml,
-		attrs: handledAttributes,
 		page: file
 	}
 	
 	db.find({name: content.name}, function (err, docs) {
-		if(docs.length){	
+		if(docs.length){
+			if(typeof(req.body.repeatIndex) !== 'undefined'){
+				content.repeats = docs[0].repeats || [];
+				var existingRepeat = content.repeats.filter(function(r){ return r.index == req.body.repeatIndex });
+				console.log(existingRepeat);
+				if(existingRepeat.length > 0){
+					existingRepeat[0].html = req.body.repeatHtml;
+				} else {
+					content.repeats.push({
+						index: req.body.repeatIndex,
+						html: req.body.repeatHtml,
+						attrs: handledAttributes
+					});
+				}
+			} else {				
+				content.html = req.body.innerHtml;
+				content.attrs = handledAttributes;
+			}
+			
 			db.update({ name: content.name }, { $set: content }, {}, function (err, numReplaced) {
 				res.status(200).json(content);
 			});
 		} else {
+			if(typeof(req.body.repeatIndex) !== 'undefined'){
+				content.repeats = [{
+					index: req.body.repeatIndex,
+					html: req.body.repeatHtml,
+					attrs: handledAttributes
+				}];
+			} else {				
+				content.html = req.body.innerHtml;
+				content.attrs = handledAttributes;
+			}
+						
 			db.insert(content, function (err, newDoc) {
 				res.status(200).json(content);
 			});

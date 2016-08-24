@@ -1,6 +1,5 @@
 $(document).ready(function(){
-	
-	
+			
 	$.get('/cms/edition', function(response){
 		if(response){
 			$('body')
@@ -8,6 +7,10 @@ $(document).ready(function(){
 				.append('<div class="cms-notification"></div>')
 				.attr('id', 'drag-container');
 			
+			$('head').append('<link href="/cms/css/main.css" type="text/css" rel="stylesheet" />' + 
+			'<link href="/cms/css/font-awesome.min.css" type="text/css" rel="stylesheet" />');
+			$('body').append('<div class="cms-admin">Bonjour '+response+'</div>')
+				.append('<div class="notification"></div>');
 			
 			$('.cms-admin-handle').click(function(){
 				$('.cms-admin').toggleClass('extended');
@@ -19,7 +22,7 @@ $(document).ready(function(){
 			var script = document.createElement('script');
 			script.src = "/cms/js/tinymce/tinymce.min.js";
 			script.onload = function () {
-				initTinymce();
+				initEditor();
 				
 				$('body').on('click', '[data-content]', function(){
 						if(!$(this).is('img')){
@@ -33,9 +36,16 @@ $(document).ready(function(){
 											
 						data = {
 							name: $(elem).attr('data-content'), 
-							innerHtml: elem.innerHTML,
 							attrs: attrs
 						};
+						
+						var html = $(elem).find('.cms-wrapper').html();
+						if($(elem).attr('data-repeatable') == "true"){
+							data.repeatIndex = $(elem).index('[data-content=' + data.name + ']');
+							data.repeatHtml = html;
+						} else {							
+							data.innerHtml = html;
+						}
 						
 						$.ajax({
 							url:'/cms/edit',
@@ -56,10 +66,32 @@ $(document).ready(function(){
 			document.head.appendChild(script);		
 		}
 		
-		function initTinymce(){
-			tinymce.remove('[data-content]');
+		function initEditor(){
+			
+			$('[data-content]')
+				.wrapInner('<div class="cms-wrapper"></div>')
+				
+			$('[data-content][data-repeatable]')
+				.append('<div class="cms-duplicate"><span class="fa fa-clone"></span>Dupliquer<span></span></div>');
+			
+			initTinymce();
+			
+			$('body').on('click', '.cms-duplicate', function(){
+				var elem = $(this).closest('[data-repeatable]');
+				var newElem = elem.clone();
+				$.each(["id", "contenteditable"],function(i,attrName){
+					newElem.removeAttr(attrName);
+				});
+				newElem.removeClass('mce-content-body mce-edit-focus');
+				elem.after(newElem);
+				initTinymce(newElem);
+			});
+		}
+		
+		function initTinymce(){			
+			tinymce.remove('.cms-wrapper');
 			tinymce.init({
-				selector: '[data-content]',
+				selector: '.cms-wrapper',
 				inline: true,
 				toolbar: 'undo redo image link paste | bold italic underline',
 				menubar: false,
@@ -82,55 +114,6 @@ $(document).ready(function(){
 			});
 			return attributes;
 		}
-		
-		/* 
-		var getElementTreeXPath = function(element) {
-			var paths = [];
-
-			// Use nodeName (instead of localName) so namespace prefix is included (if any).
-			for (; element && element.nodeType == 1; element = element.parentNode)  {
-				var index = 0;
-
-				for (var sibling = element.previousSibling; sibling; sibling = sibling.previousSibling) {
-					// Ignore document type declaration.
-					if (sibling.nodeType == Node.DOCUMENT_TYPE_NODE)
-						continue;
-
-					if (sibling.nodeName == element.nodeName)
-						++index;
-				}
-
-				var tagName = element.nodeName.toLowerCase();
-				var pathIndex = (index ? "[" + (index+1) + "]" : "");
-				paths.splice(0, 0, tagName + pathIndex);
-			}
-
-			return paths.length ? "/" + paths.join("/") : null;
-		};
-		
-		$('body p, span, div, img').on('dblclick', '*:not(:has(*), .editable)', function(){
-			var xpath = getElementTreeXPath(this);
-			var elem = this;
-			
-			$.ajax({
-				url:'/cms/make-editable',
-				type:"POST",
-				data: JSON.stringify({xpath: xpath}),
-				contentType:"application/json; charset=utf-8",
-				dataType:"json",
-				success: function(){					
-					$(elem).addClass('editable');
-					initTinymce();
-					$(elem).focus();
-					$('.notification').html('Elément modifiable !').fadeIn(500, function(){
-						window.setTimeout(function(){
-							$('.notification').fadeOut(500);
-						}, 2000);
-					});
-				}
-			});
-			
-		}); */
 
 	});	
 		

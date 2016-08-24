@@ -38,12 +38,34 @@ module.exports = function(options, app) {
 					
 					db.find({page: page}, function (err, docs) {
 						docs.forEach(function(d){
-							elem = $('[data-content="' + d.name + '"]');							
-							elem.html(d.html);
-							if(d.attrs){
-								d.attrs.forEach(function(a){
-									elem.attr(a.name, a.value);
+							elem = $('[data-content="' + d.name + '"]');
+							if(elem.attr('data-repeatable') == "true"){
+								if(!d.repeats){
+									return;
+								}
+								
+								d.repeats.sort(function(a, b){
+									return a.index === b.index ? 0 : a.index < b.index ? -1 : 1;
+								}).forEach(function(c) {										
+									if(c.index === 0){
+										elem.html(c.html);
+									} else {
+										var newEl = elem.clone().html(c.html);
+										var alreadyCreated = elem.siblings('[data-repeatable]');
+										if(alreadyCreated.length){
+											alreadyCreated.last().after(newEl);
+										} else {
+											elem.after(newEl);
+										}
+									}
 								});
+							} else {
+								elem.html(d.html);
+								if(d.attrs){
+									d.attrs.forEach(function(a){
+										elem.attr(a.name, a.value);
+									});
+								}
 							}
 						});
 						
