@@ -4015,3 +4015,16 @@
 		top: 20px;
 		left: 20px;
 	}
+	
+	.test-repeatable{
+		display: block;
+		width: 80%;
+		margin: auto;
+	}
+	
+	.test-repeatable > div{
+		display: inline-block;
+		width: 30%;
+		margin-right: 1%;
+		margin-left: -4px;
+	}

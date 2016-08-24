@@ -21,9 +21,9 @@
 			
 			<!-- Banner -->
 			<section id="banner" style="background-position: 50% 0px;">
-				<div class="content">
+				<div class="content" data-content="header">
 					<header>
-						<h2 data-content="title" id="title">Stupid CMS (editable title)</h2>
+						<h2 id="title">Stupid CMS (editable title)</h2>
 						<p>
 							<span>A fucking simple inline editor</span><br>
 							<span>For static websites</span>
@@ -32,16 +32,19 @@
 					</header>
 				</div>
 			</section>
+			
+			<section class="test-repeatable">
+				<div data-repeatable="true" data-content="main">
+					<div class="content">
+						<h3>Repeatable content</h3>
+						<p>This content is repeatable</p>
+					</div>
+				</div>
+			</section>
 		</div>
 		<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.scrolly.min.js"></script>
-		<script src="assets/js/jquery.dropotron.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/skel.min.js"></script>
-		<script src="assets/js/util.js"></script>
+		<script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
 		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-		<script src="assets/js/main.js"></script>
 
 		<script src="/cms/js/editable.js"></script>
 	</body>

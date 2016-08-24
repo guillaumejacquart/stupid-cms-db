@@ -41,11 +41,11 @@ cms({
 }, app);
 ```
 
- 5. Put your website static files in ./site
- 6. Add the ".editable" class and a unique ID to HTML tags you want to make editable. Only leaf tag are recommended
- 7. Install the modules and run :
+ 4. Put your website static files in ./site
+ 5. Add the "cms-content" attributes with a unique value.
+ 6. Install the modules and run :
 npm install & npm start
- 8. Go to 'http://localhost:3000/stupid-cms/admin' and enter your credentials to edit the site.
+ 7. Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
 
 ### Using the middleware
 You can add a editable static site to any of your expressjs application using this middleware. Just add one configuration and pass your express app object to the cms :
@@ -64,6 +64,11 @@ cms({
 	}
 }, app);
 ```
+
+
+Then repeat steps 4 to 8 to edit your content
+
+
 Currently only basic auth is supported. More to come...
 ## Roadmap
 
