@@ -1,15 +1,32 @@
 .cms-admin{
 	position:fixed;
-	display:none;
 	top:0;
-	width:100%;
-	background-color: rgba(0,0,0,1);
+	right:0;
+	width:30px;
+	height: 40px;
+	overflow:hidden;
+	background-color: rgba(0,0,0,0.7);
     color: white;
     z-index: 9998;
 	padding: 10px;
 }
 
-.notification {
+.cms-admin.extended{
+	position:fixed;
+	width:auto;
+	height: 40px;
+	background-color: rgba(0,0,0,0.7);
+    color: white;
+    z-index: 9998;
+	padding: 10px;
+}
+
+.cms-admin > div, .cms-admin-content > div {
+	display:inline-block;
+	vertical-align:middle;
+}
+
+.cms-notification {
 	display:none;
 	position:fixed;
 	top: 15px;
@@ -18,4 +35,11 @@
     z-index: 9999;
 	padding: 10px;
 	color:white;
+}
+
+.cms-admin-handle{
+	cursor:pointer;
+	padding: 10px;
+	font-weight:bold;
+	margin: -10px;
 }

@@ -2,13 +2,20 @@ var express = require('express');
 var path = require("path");
 var fs = require("fs.extra");
 var cheerio = require('cheerio');
+var mustacheExpress = require('mustache-express');
 
 var Datastore = require('nedb')
   , db = new Datastore({ filename: 'db.data', autoload: true });
 
 module.exports = function(options, app) {
 	
-	app.use('/cms', express.static(path.join(__dirname, 'public')));
+	app.use('/cms', express.static(path.join(__dirname, 'public')));	
+
+	// Register '.mustache' extension with The Mustache Express
+	app.engine('html', mustacheExpress());
+
+	app.set('view engine', 'mustache');
+	app.set('views', path.join(__dirname, 'views'));
 		
 	var router = express.Router();
 	router.get('/:page?', function (req, res, next) {
@@ -39,6 +46,11 @@ module.exports = function(options, app) {
 								});
 							}
 						});
+						
+						// Add minimal css and js to html.
+						$('head').append('<link href="/cms/css/main.css" type="text/css" rel="stylesheet" />')
+						$('body').append('<script src="/cms/js/editable.js"></script>');
+						
 						res.status(200).send($.html());
 					});
 				});

@@ -11,9 +11,13 @@ var options,
 	db;
 
 /* GET user infos. */
-router.get('/user', function(req, res, next) {
+router.get('/edition', function(req, res, next) {
 	var user = basicAuth(req);
-	res.json(user && user.name);
+	var filepath = path.join(options.sitePath, 'templates');
+	
+	fs.readdir(filepath, function(err, files){
+		res.render('cms-bar.html', { user: user, templates: files });
+	});
 });
 
 var auth = function (req, res, next) {

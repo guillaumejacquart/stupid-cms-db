@@ -1,12 +1,20 @@
 $(document).ready(function(){
 	
 	
-	$.get('/cms/user', function(response){
+	$.get('/cms/edition', function(response){
 		if(response){
+			$('body')
+				.prepend(response)
+				.append('<div class="cms-notification"></div>')
+				.attr('id', 'drag-container');
 			
-			$('head').append('<link href="/cms/css/main.css" type="text/css" rel="stylesheet" />')
-			$('body').append('<div class="cms-admin">Bonjour '+response+'</div>')
-				.append('<div class="notification"></div>');
+			
+			$('.cms-admin-handle').click(function(){
+				$('.cms-admin').toggleClass('extended');
+				$(this).text($('.cms-admin').hasClass('extended') ? '>' : '<');
+			});
+			
+			var notif = $('.cms-notification');
 			
 			var script = document.createElement('script');
 			script.src = "/cms/js/tinymce/tinymce.min.js";
@@ -36,17 +44,16 @@ $(document).ready(function(){
 							contentType:"application/json; charset=utf-8",
 							dataType:"json",
 							success: function(){
-								$('.notification').html('Enregistrement effectué !').fadeIn(500, function(){
+								notif.html('Content saved !').fadeIn(500, function(){
 									window.setTimeout(function(){
-										$('.notification').fadeOut(500);
+										notif.fadeOut(500);
 									}, 2000);
 								});
 							}
 						});
 					});
 			};
-			
-			document.head.appendChild(script); //or something of the likes			
+			document.head.appendChild(script);		
 		}
 		
 		function initTinymce(){
@@ -54,7 +61,7 @@ $(document).ready(function(){
 			tinymce.init({
 				selector: '[data-content]',
 				inline: true,
-				toolbar: 'undo redo image link paste',
+				toolbar: 'undo redo image link paste | bold italic underline',
 				menubar: false,
 				plugins: "image link paste",
 				paste_as_text: true,
