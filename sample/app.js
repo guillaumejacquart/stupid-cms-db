@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var cms = require('stupid-cms-db');
+var cms = require('../cms');
 
 var app = express();
 

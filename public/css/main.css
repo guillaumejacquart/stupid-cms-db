@@ -26,7 +26,6 @@
 	vertical-align:middle;
 }
 
-.cms-notification {
 [data-content] {
 	position:relative;
 }
@@ -54,7 +53,7 @@
 	display:block;
 }
 
-.notification {
+.cms-notification {
 	display:none;
 	position:fixed;
 	top: 15px;

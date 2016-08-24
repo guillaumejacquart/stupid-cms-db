@@ -9,7 +9,7 @@ $(document).ready(function(){
 			
 			$('head').append('<link href="/cms/css/main.css" type="text/css" rel="stylesheet" />' + 
 			'<link href="/cms/css/font-awesome.min.css" type="text/css" rel="stylesheet" />');
-			$('body').append('<div class="cms-admin">Bonjour '+response+'</div>')
+			$('body')
 				.append('<div class="notification"></div>');
 			
 			$('.cms-admin-handle').click(function(){
