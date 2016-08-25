@@ -34,6 +34,11 @@ module.exports = function(options, app) {
 		fs.access(filepath, fs.F_OK, function(){
 			if(req.body){
 				fs.readFile(filepath, 'utf8', function(err, data){
+					if(!data){
+						next();
+						return;
+					}
+					
 					$ = cheerio.load(data);
 					
 					db.find({page: page}, function (err, docs) {

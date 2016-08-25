@@ -21,6 +21,10 @@ $(document).ready(function(){
 			
 			var notif = $('.cms-notification');
 			
+			$( window ).resize(function() {
+				initRepeatable();
+			});
+			
 			var script = document.createElement('script');
 			script.src = "/cms/js/tinymce/tinymce.min.js";
 			script.onload = function () {
@@ -85,10 +89,13 @@ $(document).ready(function(){
 			});
 			
 			$('body').on('click', '.cms-repeat-actions .cms-delete', function(){
-				var index = $(this).closest('.cms-repeat-actions').data('index');
-				var elem = $('[data-content][data-repeatable]').eq(index);
+				var actions = $(this).closest('.cms-repeat-actions');
+				var index = actions.data('index');
+				var name = actions.data('name');
+				
+				var elem = $('[data-content="' + name + '"][data-repeatable]').eq(index);
 				var data = JSON.stringify({
-					name: elem.attr('data-content'),
+					name: name,
 					repeatIndex: index
 				});
 				
@@ -99,6 +106,8 @@ $(document).ready(function(){
 					contentType:"application/json; charset=utf-8",
 					dataType:"json",
 					success: function(){
+						elem.remove();
+						initRepeatable();
 						notif.html('Content deleted !').fadeIn(500, function(){
 							window.setTimeout(function(){
 								notif.fadeOut(500);
@@ -107,19 +116,71 @@ $(document).ready(function(){
 					}
 				});
 			});
+			
+			$('body').on('click', '.cms-repeat-actions .cms-move-up', function(){
+				moveRepeatable('up', this);
+			});
+			
+			$('body').on('click', '.cms-repeat-actions .cms-move-down', function(){
+				moveRepeatable('down', this);
+			});
 		}
 		
-		function initRepeatable(){								
+		function initRepeatable(){	
+			$('.cms-repeat-actions').remove();		
 			$('[data-content][data-repeatable]').each(function(){
 				var elem = $(this);
-				var handle = $('<div class="cms-repeat-actions"><div class="cms-copy"><span class="fa fa-clone"></span>Copy<span></span></div>' + 
-					'<div class="cms-delete"><span class="fa fa-times"></span>Remove<span></span></div></div>');
+				var name = elem.attr('data-content');
+				var index = elem.index('[data-content="' + name + '"][data-repeatable]');
+				
+				var handle = $('<div class="cms-repeat-actions"><div class="cms-copy"><span class="fa fa-clone"></span></div>' + 
+					'<div class="cms-delete"><span class="fa fa-trash-o"></div>' + 
+					'<div class="cms-move-up"><span class="fa fa-angle-up"></div>' + 
+					'<div class="cms-move-down"><span class="fa fa-angle-down"></div></div>');
+					
 				handle.css({
 					top: elem.offset().top,
 					left: elem.width() + elem.offset().left - 100,
 				});
-				handle.data('index', elem.index('[data-content][data-repeatable]'));
+				
+				handle.data('index', index);
+				handle.data('name', name);
 				$('body').append(handle);
+			});
+		}
+		
+		function moveRepeatable(dir, elemBtn){
+			var actions = $(elemBtn).closest('.cms-repeat-actions');
+			var index = actions.data('index');
+			var name = actions.data('name');
+			
+			var length = $('[data-content="' + name + '"][data-repeatable]').length;
+			var elem = $('[data-content="' + name + '"][data-repeatable]').eq(index);
+			var data = JSON.stringify({
+				name: name,
+				repeatIndex: index,
+				newRepeatIndex: dir === 'up' ? Math.max(index - 1, 0) : Math.min(index + 1, length - 1)
+			});
+			
+			$.ajax({
+				url:'/cms/order',
+				type:"POST",
+				data: data,
+				contentType:"application/json; charset=utf-8",
+				dataType:"json",
+				success: function(){
+					if(dir === 'up'){
+						$(elem).after($(elem).prev());
+					} else {						
+						$(elem).before($(elem).next());
+					}						
+					initRepeatable();
+					notif.html('Content moved !').fadeIn(500, function(){
+						window.setTimeout(function(){
+							notif.fadeOut(500);
+						}, 2000);
+					});
+				}
 			});
 		}
 		

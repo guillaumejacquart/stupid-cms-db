@@ -49,19 +49,7 @@ router.get('/login', auth, function(req, res, next) {
 });
 
 /* POST edit content page. */
-router.post('/edit', auth, function(req, res, next) {
-	var referer = req.get('Referer');
-	var parsed = url.parse(referer);
-	var file = path.basename(parsed.pathname);
-	
-	if(file.length == 0){
-		file = 'index.html';
-	}
-	
-	if(file.indexOf('.html') === -1){
-		file += '.html';
-	}
-	
+router.post('/edit', auth, function(req, res, next) {	
 	if(req.body.attrs){
 		var handledAttributes = req.body.attrs.filter(function(a){
 			return ['src'].indexOf(a.name) !== -1;
@@ -70,7 +58,7 @@ router.post('/edit', auth, function(req, res, next) {
 	
 	var content = {
 		name: req.body.name,
-		page: file
+		page: getPage(req)
 	}
 	
 	db.find({name: content.name, page: content.page}, function (err, docs) {
@@ -115,8 +103,75 @@ router.post('/edit', auth, function(req, res, next) {
 	})
 });
 
-/* POST edit content page. */
-router.post('/remove', auth, function(req, res, next) {
+/* POST remove content repeatable. */
+router.post('/remove', auth, function(req, res, next) {	
+	var content = {
+		name: req.body.name,
+		page: getPage(req)
+	}
+	
+	db.find({name: content.name, page: content.page}, function (err, docs) {
+		if(docs.length){
+			content.repeats = docs[0].repeats || [];
+			var indexToDelete;
+			var existingRepeat = content.repeats.filter(function(r, e_index){ 
+				if(r.index === req.body.repeatIndex){
+					indexToDelete = e_index;
+					return true;
+				}
+				return false;
+			});
+			if(existingRepeat.length > 0){
+				content.repeats.splice(indexToDelete, 1);
+				content.repeats.forEach(function(r){
+					if(r.index > req.body.repeatIndex){
+						r.index--;
+					}
+				});
+				console.log(content.repeats);
+			}
+			
+			db.update({ name: content.name }, { $set: content }, {}, function (err, numReplaced) {
+				res.status(200).json(content);
+			});
+		} 
+	})
+});
+
+/* POST remove content repeatable. */
+router.post('/order', auth, function(req, res, next) {
+	
+	var content = {
+		name: req.body.name,
+		page: getPage(req)
+	}
+	
+	db.find({name: content.name, page: content.page}, function (err, docs) {
+		if(docs.length){
+			content.repeats = docs[0].repeats || [];
+			var indexToDelete;
+			var existingRepeat = content.repeats.filter(function(r){ 
+				return r.index === req.body.repeatIndex;
+			});
+			var repeatToMove = content.repeats.filter(function(r){ 
+				return r.index === req.body.newRepeatIndex;
+			});
+			
+			if(existingRepeat.length > 0){
+				existingRepeat[0].index = req.body.newRepeatIndex;
+				if(repeatToMove.length > 0){
+					repeatToMove[0].index = req.body.repeatIndex;
+				}
+			}
+			
+			db.update({ name: content.name }, { $set: content }, {}, function (err, numReplaced) {
+				res.status(200).json(content);
+			});
+		} 
+	})
+});
+
+function getPage(req){	
 	var referer = req.get('Referer');
 	var parsed = url.parse(referer);
 	var file = path.basename(parsed.pathname);
@@ -129,25 +184,8 @@ router.post('/remove', auth, function(req, res, next) {
 		file += '.html';
 	}
 	
-	var content = {
-		name: req.body.name,
-		page: file
-	}
-	
-	db.find({name: content.name, page: content.page}, function (err, docs) {
-		if(docs.length){
-			content.repeats = docs[0].repeats || [];
-			var existingRepeat = content.repeats.filter(function(r){ return r.index == req.body.repeatIndex });
-			if(existingRepeat.length > 0){
-				content.repeats.splice(existingRepeat.index, 1);
-			}
-			
-			db.update({ name: content.name }, { $set: content }, {}, function (err, numReplaced) {
-				res.status(200).json(content);
-			});
-		} 
-	})
-});
+	return file;
+}
 
 module.exports = function(auth){
 	options = auth;
