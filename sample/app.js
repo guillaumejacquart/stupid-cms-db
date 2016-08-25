@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-var sitePath = path.join(__dirname, 'forty');
+var sitePath = path.join(__dirname, 'site');
 cms({
 	sitePath: sitePath,
 	index: 'index.html',
