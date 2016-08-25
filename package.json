@@ -1,11 +1,12 @@
 {
   "name": "stupid-cms-db",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "private": false,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "basic-auth": "^1.0.4",
     "body-parser": "^1.15.2",
     "cheerio": "^0.20.0",
     "commander": "^2.9.0",
