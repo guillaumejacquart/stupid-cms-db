@@ -73,8 +73,8 @@ $(document).ready(function(){
 		}
 		
 		function initEditor(){		
-			initRepeatable();
 			initTinymce();
+			initRepeatable();
 			
 			$('body').on('click', '.cms-repeat-actions .cms-copy', function(){
 				var elem = $('[data-content][data-repeatable]').eq($(this).closest('.cms-repeat-actions').index('index'));
@@ -191,9 +191,10 @@ $(document).ready(function(){
 				inline: true,
 				toolbar: 'undo redo image link paste | bold italic underline',
 				menubar: false,
-				plugins: "image link paste",
+				plugins: "image link paste visualblocks",
 				paste_as_text: true,
-				forced_root_block : ""
+				forced_root_block : "",
+				visualblocks_default_state: true
 			});
 		}
 		
