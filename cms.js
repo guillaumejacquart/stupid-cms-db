@@ -4,8 +4,7 @@ var fs = require("fs.extra");
 var cheerio = require('cheerio');
 var mustacheExpress = require('mustache-express');
 
-var Datastore = require('nedb')
-  , db = new Datastore({ filename: 'db.data', autoload: true });
+var Datastore = require('nedb');
 
 module.exports = function(options, app) {
 	
@@ -16,6 +15,8 @@ module.exports = function(options, app) {
 
 	app.set('view engine', 'mustache');
 	app.set('views', path.join(__dirname, 'views'));
+	
+	var db = new Datastore({ filename: options.dbPath, autoload: true });
 		
 	var router = express.Router();
 	router.get('/:page?', function (req, res, next) {

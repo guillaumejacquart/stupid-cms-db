@@ -75,6 +75,7 @@ $(document).ready(function(){
 		function initEditor(){		
 			initTinymce();
 			initRepeatable();
+			initCreateEditable();
 			
 			$('body').on('click', '.cms-repeat-actions .cms-copy', function(){
 				var elem = $('[data-content][data-repeatable]').eq($(this).closest('.cms-repeat-actions').index('index'));
@@ -198,6 +199,22 @@ $(document).ready(function(){
 			});
 		}
 		
+		function initCreateEditable(){
+			$('body *').filter(function(){
+				return !$(this).closest('[data-content]').length && !$(this).find('[data-content]').length;
+			})
+			.hover(function(){
+				$(this).css({ border: '1px dashed #ddd' });
+			}, function(){				
+				$(this).css({ border: 'initial' });
+			})
+			.dblclick(function(e){
+				e.stopPropagation();
+				var that = $(this);
+				console.log(that.getPath());
+			});
+		}
+		
 		function getAttributes(elem){	
 			var attributes = [];	
 			elem.each(function() {
@@ -214,4 +231,31 @@ $(document).ready(function(){
 
 	});	
 		
+});
+
+jQuery.fn.extend({
+    getPath: function () {
+        var path, node = this;
+        while (node.length) {
+            var realNode = node[0], name = realNode.localName;
+            if (!name) break;
+            name = name.toLowerCase();
+
+            var parent = node.parent();
+
+            var sameTagSiblings = parent.children(name);
+            if (sameTagSiblings.length > 1) { 
+                allSiblings = parent.children();
+                var index = allSiblings.index(realNode) + 1;
+                if (index > 1) {
+                    name += ':nth-child(' + index + ')';
+                }
+            }
+
+            path = name + (path ? '>' + path : '');
+            node = parent;
+        }
+
+        return path;
+    }
 });
