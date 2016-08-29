@@ -1,6 +1,11 @@
 # Stupid CMS
 A stupidly simple CMS to make static sites editable without compromising your original static files.
 
+
+![Codeship](https://codeship.com/projects/77c806e0-42bd-0134-297e-6295fca7620e/status?branch=master "Codeship")
+
+
+
 ## Demo
 Live demo : [Stupid-CMS demo](http://stupid-cms.dynalias.org/)
 To edit the content, go to : [http://stupid-cms.dynalias.org/cms/login](http://stupid-cms.dynalias.org/cms/login) and use the credentials :
