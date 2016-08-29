@@ -34,24 +34,24 @@
 	
 }
 
-.cms-repeat-actions {
+.cms-repeat-actions, .cms-new-content {
 	position:absolute;
 	z-index: 9999;
     width: auto;
 	cursor:pointer;
 	color: #eee;
-	padding: 5px 10px;
 	background-color: rgba(0, 0, 0, 0.8);
 	font-size:1rem;
 }
 
-.cms-repeat-actions > div {
+.cms-repeat-actions > div, .cms-new-content > div {
 	display:inline-block;
-	margin: 0px 3px;
+	padding: 6px 6px;
+	border-right: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.cms-repeat-actions .fa {
-	margin-right: 5px;
+.cms-repeat-actions > div:last-child, .cms-new-content > div:last-child {
+	border-right: none;
 }
 
 .cms-notification {
