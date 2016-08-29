@@ -8,9 +8,23 @@
 				$('head').append('<link href="/cms/css/main.css" type="text/css" rel="stylesheet" />');
 				
 				var cms = $('<div class="stupid-cms"></div>');
-				$('body').append(cms);
+				var notif = $('<div class="cms-notification"></div>');
+				cms.append(notif);
 				
-				cms.append('<div class="cms-notification"></div>');
+				$('body').append(cms);
+	
+				$(document).ajaxError(function(event, request, settings) {
+					console.log(event);
+					notif.html(request.responseJSON.message)
+						.addClass('error')
+						.fadeIn(500, function(){
+							window.setTimeout(function(){
+								notif.fadeOut(500, function(){
+									notif.removeClass('error')
+								});
+							}, 2000);
+					});
+				});
 				
 				$.get('/cms/edition', function(response) {
 					if(response){
@@ -23,7 +37,6 @@
 					$(this).text($('.cms-admin').hasClass('extended') ? '>' : '<');
 				});
 				
-				var notif = $('.cms-notification');
 				
 				$(window).resize(function() {
 					initRepeatable();
@@ -209,7 +222,7 @@
 			}
 			
 			function initCreateEditable(){
-				$('body *').filter(function(){
+				$('div, ul, ol, h1, h2, h3, h4, h5, p').filter(function(){
 					return !$(this).closest('[data-content]').length 
 						&& !$(this).find('[data-content]').length
 						&& !$(this).closest('.stupid-cms').length;
@@ -233,7 +246,7 @@
 					
 					handle.css({
 						top: elem.offset().top,
-						left: elem.width() + elem.offset().left - 100,
+						left: elem.width() + elem.offset().left - 25,
 					});
 					
 					handle.data('path', path);

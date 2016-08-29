@@ -65,6 +65,10 @@
 	color:white;
 }
 
+.cms-notification.error {
+	background-color: rgba(150,20,20,1);
+}
+
 .cms-admin-handle{
 	cursor:pointer;
 	padding: 10px;
