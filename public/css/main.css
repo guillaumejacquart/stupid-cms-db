@@ -30,10 +30,6 @@
 	position:relative;
 }
 
-[data-content]:hover {
-	
-}
-
 .cms-repeat-actions, .cms-new-content {
 	position:absolute;
 	z-index: 9999;
