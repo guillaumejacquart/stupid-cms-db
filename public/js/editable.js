@@ -141,6 +141,64 @@
 				});
 			}
 			
+			function moveRepeatable(dir, elemBtn){
+				var actions = $(elemBtn).closest('.cms-repeat-actions');
+				var index = actions.data('index');
+				var name = actions.data('name');
+				
+				var length = $('[data-content="' + name + '"][data-repeatable]').length;
+				var elem = $('[data-content="' + name + '"][data-repeatable]').eq(index);
+				var data = JSON.stringify({
+					name: name,
+					repeatIndex: index,
+					newRepeatIndex: dir === 'up' ? Math.max(index - 1, 0) : Math.min(index + 1, length - 1)
+				});
+				
+				$.ajax({
+					url:'/cms/order',
+					type:"POST",
+					data: data,
+					contentType:"application/json; charset=utf-8",
+					dataType:"json",
+					success: function(){
+						if(dir === 'up'){
+							$(elem).after($(elem).prev());
+						} else {						
+							$(elem).before($(elem).next());
+						}						
+						initRepeatable();
+						notif.html('Content moved !').fadeIn(500, function(){
+							window.setTimeout(function(){
+								notif.fadeOut(500);
+							}, 2000);
+						});
+					}
+				});
+			}
+			
+			function initTinymce(){			
+				tinymce.remove();
+				tinymce.init({
+					selector: '[data-content]',
+					inline: true,
+					toolbar: 'undo redo image link paste | bold italic underline | remove-editor',
+					menubar: false,
+					plugins: "image link paste visualblocks",
+					paste_as_text: true,
+					forced_root_block : "",
+					visualblocks_default_state: true,
+					setup: function (editor) {
+						editor.addButton('remove-editor', {
+							text: 'Remove editor',
+							icon: false,
+							onclick: function () {
+								destroyEditable($(editor.bodyElement));
+							}
+						});
+					}
+				});
+			}
+			
 			function initEditor(){		
 				initTinymce();
 				initRepeatable();
@@ -277,64 +335,6 @@
 						});
 				};
 				document.head.appendChild(script);		
-			}
-			
-			function moveRepeatable(dir, elemBtn){
-				var actions = $(elemBtn).closest('.cms-repeat-actions');
-				var index = actions.data('index');
-				var name = actions.data('name');
-				
-				var length = $('[data-content="' + name + '"][data-repeatable]').length;
-				var elem = $('[data-content="' + name + '"][data-repeatable]').eq(index);
-				var data = JSON.stringify({
-					name: name,
-					repeatIndex: index,
-					newRepeatIndex: dir === 'up' ? Math.max(index - 1, 0) : Math.min(index + 1, length - 1)
-				});
-				
-				$.ajax({
-					url:'/cms/order',
-					type:"POST",
-					data: data,
-					contentType:"application/json; charset=utf-8",
-					dataType:"json",
-					success: function(){
-						if(dir === 'up'){
-							$(elem).after($(elem).prev());
-						} else {						
-							$(elem).before($(elem).next());
-						}						
-						initRepeatable();
-						notif.html('Content moved !').fadeIn(500, function(){
-							window.setTimeout(function(){
-								notif.fadeOut(500);
-							}, 2000);
-						});
-					}
-				});
-			}
-			
-			function initTinymce(){			
-				tinymce.remove();
-				tinymce.init({
-					selector: '[data-content]',
-					inline: true,
-					toolbar: 'undo redo image link paste | bold italic underline | remove-editor',
-					menubar: false,
-					plugins: "image link paste visualblocks",
-					paste_as_text: true,
-					forced_root_block : "",
-					visualblocks_default_state: true,
-					setup: function (editor) {
-						editor.addButton('remove-editor', {
-							text: 'Remove editor',
-							icon: false,
-							onclick: function () {
-								destroyEditable($(editor.bodyElement));
-							}
-						});
-					}
-				});
 			}
 		});
 	});
