@@ -272,7 +272,7 @@
 						.fadeIn(500, function(){
 							window.setTimeout(function(){
 								notif.fadeOut(500, function(){
-									notif.removeClass("error")
+									notif.removeClass("error");
 								});
 							}, 2000);
 					});
@@ -344,14 +344,16 @@
 			var path, node = this;
 			while (node.length) {
 				var realNode = node[0], name = realNode.localName;
-				if (!name) break;
+				if (!name) {
+					break;
+				}
 				name = name.toLowerCase();
 
 				var parent = node.parent();
 
 				var sameTagSiblings = parent.children(name);
 				if (sameTagSiblings.length > 1) { 
-					allSiblings = parent.children();
+					var allSiblings = parent.children();
 					var index = allSiblings.index(realNode) + 1;
 					if (index > 1) {
 						name += ":nth-child(" + index + ")";
