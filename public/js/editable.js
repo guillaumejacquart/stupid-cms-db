@@ -3,8 +3,8 @@
 		var page = $("#cms-page-name").val();
 	
 		$.get("/cms/user?page=" + page, function(response) {			
-			var cms, 
-				notif;			
+			var cms,
+				notif;
 			
 			function displayNotif(content, type){
 				notif.html(content)
@@ -152,7 +152,9 @@
 					$(elem).after($(elem).prev());
 				} else {						
 					$(elem).before($(elem).next());
-				}						
+				}					
+				
+				savePage(true);				
 				initRepeatable();
 			}
 			
@@ -251,9 +253,10 @@
 			
 			function loadCache(serverDate){
 				var local = localStorage.getItem("stupid-cms.contents");
+				
 				if(local){
 					local = JSON.parse(local);
-					if(new Date(local.date) > serverDate){
+					if(!serverDate || new Date(local.date) > new Date(serverDate)){
 						// load cache content into data-content tags
 						if(local.contents && local.contents instanceof Array){
 							local.contents.forEach(function(d){
@@ -262,6 +265,9 @@
 									if(!d.repeats){
 										return;
 									}
+									
+									elem.slice(1).remove();
+									elem = elem.first();
 									
 									d.repeats.sort(function(a, b){
 										return a.repeatIndex === b.repeatIndex ? 0 : a.repeatIndex < b.repeatIndex ? -1 : 1;
@@ -288,6 +294,8 @@
 								}
 							});
 						}
+					} else{
+						localStorage.removeItem("stupid-cms.contents");
 					}
 				}
 			}
@@ -305,6 +313,7 @@
 					});
 					newElem.removeClass("mce-content-body mce-edit-focus");
 					elem.after(newElem);
+					savePage(true);
 					initRepeatable();
 					initTinymce();
 				});
@@ -317,6 +326,7 @@
 					var elem = $("[data-content=\"" + name + "\"][data-repeatable]").eq(index);
 					
 					elem.remove();
+					savePage(true);
 					initRepeatable();
 				});
 				
@@ -344,7 +354,7 @@
 						savePage(true);
 					});
 				
-				loadCache(new Date(response.lastUpdatedAt));
+				loadCache(response.lastUpdatedAt);
 	
 				$(document).ajaxError(function(event, request, settings) {
 					console.log(event);
@@ -361,6 +371,10 @@
 						
 						$(".cms-edit-page").click(function(){
 							savePage();
+						});	
+						
+						$(".cms-export-page").click(function(){
+							window.location.href = "/cms/export";
 						});						
 				
 						$('#cms_image_upload').change(function(){
@@ -396,7 +410,7 @@
 							if(response){
 								$("#cms-page-url").val(response.url);
 								$(".cms-edit-metadata").click(function(){
-									$(".cms-admin-metadata").toggle();
+									$(".cms-admin-metadata").toggleClass('extended');
 								});
 								
 								$("#cms-metadata-form").submit(function(e){
