@@ -3,12 +3,13 @@ var path = require("path");
 var fs = require("fs.extra");
 var cheerio = require("cheerio");
 var mustacheExpress = require("mustache-express");
-
 var Datastore = require("nedb");
+
 
 module.exports = function(options, app) {
 	
-	app.use("/cms", express.static(path.join(__dirname, "public")));	
+	app.use("/cms", express.static(path.join(__dirname, "public")));
+	app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 	// Register ".mustache" extension with The Mustache Express
 	app.engine("html", mustacheExpress());
@@ -16,8 +17,8 @@ module.exports = function(options, app) {
 	app.set("view engine", "mustache");
 	app.set("views", path.join(__dirname, "views"));
 	
-	var db = new Datastore({ filename: options.dbPath || "db.data", autoload: true });
-	options.db = db;
+	var dataDb = new Datastore({ filename: options.dbPath || "db.data", autoload: true });
+	options.dataDb = dataDb;
 	
 	var pageLoader = require("./lib/page_loader")(options);	
 	
@@ -29,5 +30,6 @@ module.exports = function(options, app) {
 	}));
 	
 	var routes = require("./lib/editor")(options);
+	
 	app.use("/cms", routes);
 };

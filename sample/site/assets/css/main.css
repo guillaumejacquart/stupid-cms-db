@@ -2581,6 +2581,12 @@
 		left: 20px;
 	}
 	
+	.test-newcontent{
+		display: block;
+		width: 60%;
+		margin: auto;
+	}
+	
 	.test-repeatable{
 		display: block;
 		width: 80%;

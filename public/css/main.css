@@ -1,29 +1,90 @@
 .cms-admin{
 	position:fixed;
-	top:0;
-	right:0;
-	width:30px;
-	height: 40px;
+	top:5px;
+	right:5px;
+	width:60px;
+	height: 54px;
 	overflow:hidden;
-	background-color: rgba(0,0,0,0.7);
-    color: white;
     z-index: 9998;
-	padding: 10px;
+	transition: 1s ease height;
 }
 
-.cms-admin.extended{
+.cms-admin.extended, .cms-admin:hover{
 	position:fixed;
-	width:auto;
-	height: 40px;
-	background-color: rgba(0,0,0,0.7);
+	height: 400px;
+    color: white;
+	transition: 1s ease height;
+}
+
+.cms-admin-content{
+	position:relative;
+	height: 300px;	
+}
+
+.cms-admin-content .actions{
+	position:relative;
+	height: 100%;
+}
+
+.cms-admin .actions button{
+    display: block;
+	position:relative;
+	border: 1px solid #888;
+	border-radius: 50%;
+	margin: 10px auto 0;
+	width:54px;
+	height: 54px;
+	overflow:hidden;
+	background-color: #4C986D;
+    color: white;
+	padding: 10px;	
+	transition: 0.7s ease background-color;
+}
+
+.cms-admin .actions button.cms-admin-handle{
+	background-color: #477186;
+	border-radius: 50%;
+	text-align:center;
+	margin-top: 0px;
     color: white;
     z-index: 9998;
 	padding: 10px;
 }
 
-.cms-admin > div, .cms-admin-content > div {
-	display:inline-block;
-	vertical-align:middle;
+.cms-admin .actions button:hover{
+	cursor:pointer;
+	box-shadow: 0px 0px 8px #555;	
+	background-color: #3C885D;
+	transition: 0.7s ease background-color;
+}
+
+.cms-admin .actions button.cms-admin-handle:hover{
+	background-color: #376176;
+}
+
+.cms-admin .actions button:active, .cms-admin button:focus{
+	outline:none;
+}
+
+.cms-admin .actions button > i{
+	font-size:16px;
+}
+
+.cms-admin-panel{
+	position:fixed;
+	right: 70px;
+	top: 8px;
+	background-color: #black;
+	border-radius: 10px;
+}
+
+.cms-admin-panel input[type="text"]{
+	padding: 5px;
+	height: auto;
+}
+
+.cms-admin > .cms-admin-metadata{
+	display:none;
 }
 
 [data-content] {
@@ -65,9 +126,6 @@
 	background-color: rgba(150,20,20,1);
 }
 
-.cms-admin-handle{
-	cursor:pointer;
-	padding: 10px;
-	font-weight:bold;
-	margin: -10px;
+.cms-creatable{
+	border: 1px dashed #ccc;
 }

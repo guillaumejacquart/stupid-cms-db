@@ -1,16 +1,27 @@
 (function () {
 	$(document).ready(function(){
+		var page = $("#cms-page-name").val();
 	
-		$.get("/cms/user", function(response) {			
+		$.get("/cms/user?page=" + page, function(response) {			
 			var cms, 
-				notif;
+				notif;			
+			
+			function displayNotif(content, type){
+				notif.html(content)
+					.addClass(type)
+					.fadeIn(500, function(){
+						window.setTimeout(function(){
+							notif.fadeOut(500, function(){
+								notif.removeClass(type);
+							});
+						}, 2000);
+				});
+			}
 			
 			function getAttributes(elem){	
 				var attributes = [];	
 				elem.each(function() {
 					$.each(this.attributes, function() {
-						// this.attributes is not a plain object, but an array
-						// of attribute nodes, which contain both the name and value
 						if(this.specified) {
 							attributes.push({name: this.name, value: this.value});
 						}
@@ -20,7 +31,10 @@
 			}
 			
 			function initCreateEditable(){
-				$("div, ul, ol, h1, h2, h3, h4, h5, p").filter(function(){
+				$("div, ul, ol, h1, h2, h3, h4, h5, p")
+				.unbind('mouseenter mouseleave')
+				.removeClass('cms-creatable')
+				.filter(function(){
 					return !$(this).closest("[data-content]").length 
 						&& !$(this).find("[data-content]").length
 						&& !$(this).closest(".stupid-cms").length;
@@ -29,9 +43,7 @@
 					var elem = $(this);
 					var path = elem.getPath();
 					
-					elem.css({ 
-						border: "1px dashed #ddd"
-					});
+					elem.addClass('cms-creatable');
 					if($(".cms-new-content").filter(function(){
 						return $(this).data("path") === path;
 					}).length > 0){
@@ -39,7 +51,7 @@
 					}
 					
 					var handle = $("<div class=\"cms-new-content\">" + 
-						"<div class=\"cms-create\"><span class=\"fa fa-plus\"></span></div>" + 
+						"<div class=\"cms-create\"><span class=\"fa fa-pencil\"></span></div>" + 
 						"</div>");
 					
 					handle.css({
@@ -57,9 +69,7 @@
 							return $(this).data("path") === path;
 						}).remove();
 						
-						elem.css({ 
-							border: "initial"
-						});
+						elem.removeClass('cms-creatable');
 					}
 				});
 				
@@ -72,7 +82,7 @@
 					});
 					
 					$.ajax({
-						url:"/cms/editable",
+						url:"/cms/editable?page=" + page,
 						type:"POST",
 						data: data,
 						contentType:"application/json; charset=utf-8",
@@ -80,12 +90,8 @@
 						success: function(response){
 							$(path).attr("data-content", response.name);
 							that.remove();
-							
-							notif.html("Content is now editable !").fadeIn(500, function(){
-								window.setTimeout(function(){
-									notif.fadeOut(500);
-								}, 2000);
-							});	
+							displayNotif("Content is now editable !");
+							initCreateEditable();
 							initTinymce();
 						}
 					});
@@ -95,23 +101,17 @@
 				});
 			}
 			
-			function destroyEditable(elem){
-				
+			function destroyEditable(elem){				
 				var id = elem.attr("data-content");
 				
 				$.ajax({
-					url:"/cms/editable/" + id,
+					url:"/cms/editable/" + id + "?page=" + page,
 					type:"DELETE",
 					contentType:"application/json; charset=utf-8",
 					dataType:"json",
 					success: function(response){
 						elem.removeAttr("data-content");
-						
-						notif.html("Content not editable !").fadeIn(500, function(){
-							window.setTimeout(function(){
-								notif.fadeOut(500);
-							}, 2000);
-						});	
+						displayNotif("Content not editable !");
 						initTinymce();
 						initCreateEditable();
 					}
@@ -148,33 +148,15 @@
 				
 				var length = $("[data-content=\"" + name + "\"][data-repeatable]").length;
 				var elem = $("[data-content=\"" + name + "\"][data-repeatable]").eq(index);
-				var data = JSON.stringify({
-					name: name,
-					repeatIndex: index,
-					newRepeatIndex: dir === "up" ? Math.max(index - 1, 0) : Math.min(index + 1, length - 1)
-				});
-				
-				$.ajax({
-					url:"/cms/order",
-					type:"POST",
-					data: data,
-					contentType:"application/json; charset=utf-8",
-					dataType:"json",
-					success: function(){
-						if(dir === "up"){
-							$(elem).after($(elem).prev());
-						} else {						
-							$(elem).before($(elem).next());
-						}						
-						initRepeatable();
-						notif.html("Content moved !").fadeIn(500, function(){
-							window.setTimeout(function(){
-								notif.fadeOut(500);
-							}, 2000);
-						});
-					}
-				});
+				if(dir === "up"){
+					$(elem).after($(elem).prev());
+				} else {						
+					$(elem).before($(elem).next());
+				}						
+				initRepeatable();
 			}
+			
+			var imageField;
 			
 			function initTinymce(){			
 				tinymce.remove();
@@ -183,10 +165,16 @@
 					inline: true,
 					toolbar: "undo redo image link paste | bold italic underline | remove-editor",
 					menubar: false,
-					plugins: "image link paste visualblocks",
+					plugins: "image link paste",
 					paste_as_text: true,
 					forced_root_block : "",
 					visualblocks_default_state: true,
+					file_browser_callback: function(field_name, url, type, win) {
+						if(type=='image'){
+							imageField = field_name;
+							$('#cms_image_upload').click();
+						}
+					},
 					setup: function (editor) {
 						editor.addButton("remove-editor", {
 							text: "Remove editor",
@@ -197,6 +185,111 @@
 						});
 					}
 				});
+			}
+			
+			function getData(){
+				var contents = [];
+				$('body [data-content]').each(function(){
+					var that = this;
+					var elem = $(that);
+					var attrs = getAttributes(elem);
+					var name = elem.attr("data-content");
+										
+					var data = contents.filter(function(c){
+						return c.name === name;
+					})[0];
+					
+					if(!data){
+						data = {
+							name: name, 
+							attrs: attrs
+						};
+						contents.push(data);
+					}
+					
+					var html = elem.html();
+					if(elem.attr("data-repeatable") === "true"){					
+						var repeatable = {
+							repeatIndex: elem.index("[data-content=" + data.name + "]"),
+							innerHtml: html,
+							
+						};
+						data.repeatable = true;
+						data.repeats = data.repeats || [];
+						data.repeats.push(repeatable);
+					} else {							
+						data.innerHtml = html;
+					}
+				});
+				
+				return contents;
+			}
+			
+			function savePage(local = false){				
+				var contents = getData();
+				
+				if(local){
+					var toSave = {
+						date: new Date(),
+						contents: contents
+					}
+					localStorage.setItem("stupid-cms.contents", JSON.stringify(toSave));
+					displayNotif("Content saved to draft !");
+				} else {				
+					$.ajax({
+						url:"/cms/edit-page?page=" + page,
+						type:"POST",
+						data: JSON.stringify(contents),
+						contentType:"application/json; charset=utf-8",
+						dataType:"json",
+						success: function(){
+							displayNotif("Content saved !");
+						}
+					});
+				}
+			}
+			
+			function loadCache(serverDate){
+				var local = localStorage.getItem("stupid-cms.contents");
+				if(local){
+					local = JSON.parse(local);
+					if(new Date(local.date) > serverDate){
+						// load cache content into data-content tags
+						if(local.contents && local.contents instanceof Array){
+							local.contents.forEach(function(d){
+								var elem = $("[data-content=\"" + d.name + "\"]");
+								if(elem.attr("data-repeatable") === "true"){
+									if(!d.repeats){
+										return;
+									}
+									
+									d.repeats.sort(function(a, b){
+										return a.repeatIndex === b.repeatIndex ? 0 : a.repeatIndex < b.repeatIndex ? -1 : 1;
+									}).forEach(function(c) {										
+										if(c.repeatIndex === 0){
+											elem.html(c.innerHtml);
+										} else {
+											var newEl = elem.clone().html(c.innerHtml);
+											var alreadyCreated = elem.siblings("[data-repeatable]");
+											if(alreadyCreated.length){
+												alreadyCreated.last().after(newEl);
+											} else {
+												elem.after(newEl);
+											}
+										}
+									});
+								} else {
+									elem.html(d.innerHtml);
+									if(d.attrs){
+										d.attrs.forEach(function(a){
+											elem.attr(a.name, a.value);
+										});
+									}
+								}
+							});
+						}
+					}
+				}
 			}
 			
 			function initEditor(){		
@@ -222,27 +315,9 @@
 					var name = actions.data("name");
 					
 					var elem = $("[data-content=\"" + name + "\"][data-repeatable]").eq(index);
-					var data = JSON.stringify({
-						name: name,
-						repeatIndex: index
-					});
 					
-					$.ajax({
-						url:"/cms/remove",
-						type:"POST",
-						data: data,
-						contentType:"application/json; charset=utf-8",
-						dataType:"json",
-						success: function(){
-							elem.remove();
-							initRepeatable();
-							notif.html("Content deleted !").fadeIn(500, function(){
-								window.setTimeout(function(){
-									notif.fadeOut(500);
-								}, 2000);
-							});
-						}
-					});
+					elem.remove();
+					initRepeatable();
 				});
 				
 				cms.on("click", ".cms-repeat-actions .cms-move-up", function(){
@@ -263,30 +338,80 @@
 				notif = $("<div class=\"cms-notification\"></div>");
 				cms.append(notif);
 				
-				$("body").append(cms);
+				$("body")
+					.append(cms)
+					.on('blur', '[data-content]', function(){
+						savePage(true);
+					});
+				
+				loadCache(new Date(response.lastUpdatedAt));
 	
 				$(document).ajaxError(function(event, request, settings) {
 					console.log(event);
-					notif.html(request.responseJSON.message)
-						.addClass("error")
-						.fadeIn(500, function(){
-							window.setTimeout(function(){
-								notif.fadeOut(500, function(){
-									notif.removeClass("error");
-								});
-							}, 2000);
-					});
+					displayNotif(request.responseJSON.message, "error");
 				});
 				
-				$.get("/cms/edition", function(response) {
+				$.get("/cms/edition?page=" + page, function(response) {
 					if(response){
 						cms.append(response);
-					}
-				});
 				
-				$(".cms-admin-handle").click(function(){
-					$(".cms-admin").toggleClass("extended");
-					$(this).text($(".cms-admin").hasClass("extended") ? '>' : "<");
+						$(".cms-admin-handle").click(function(){
+							$(".cms-admin").toggleClass("extended");
+						});
+						
+						$(".cms-edit-page").click(function(){
+							savePage();
+						});						
+				
+						$('#cms_image_upload').change(function(){
+							var file = this.files[0];
+							var name = file.name;
+							var size = file.size;
+							var type = file.type;
+							
+							//Your validation
+							var type = type.substring(0, 5);
+							if(type=='image') {
+								var formData = new FormData($('#cms_form_file')[0]);
+					
+								$.ajax({
+									url: "/cms/upload",
+									type: "POST",
+									data: formData,
+									async: false,
+									success: function (msg) {
+										$('#' + imageField).val(msg.path);					
+									},
+									cache: false,
+									contentType: false,
+									processData: false
+								});
+
+							} else {
+								alert('Le fichier doit etre une image') 
+							}
+						});
+						
+						$.get("/cms/metadata?page=" + page, function(response) {
+							if(response){
+								$("#cms-page-url").val(response.url);
+								$(".cms-edit-metadata").click(function(){
+									$(".cms-admin-metadata").toggle();
+								});
+								
+								$("#cms-metadata-form").submit(function(e){
+									e.preventDefault();
+									var data = $(this).serialize();
+									$.post(
+										"/cms/metadata?page=" + page,
+										data,
+										function(res){
+											displayNotif('Metadata saved !');
+										});
+								});
+							}
+						});
+					}
 				});
 				
 				
@@ -299,40 +424,6 @@
 				script.src = "/cms/js/tinymce/tinymce.min.js";
 				script.onload = function () {
 					initEditor();
-					
-					$("body")				
-						.on("blur", "[data-content]", function(){
-							var elem = this;
-							var attrs = getAttributes($(elem));
-												
-							var data = {
-								name: $(elem).attr("data-content"), 
-								attrs: attrs
-							};
-							
-							var html = $(elem).html();
-							if($(elem).attr("data-repeatable") === "true"){
-								data.repeatIndex = $(elem).index("[data-content=' + data.name + ']");
-								data.innerHtml = html;
-							} else {							
-								data.innerHtml = html;
-							}
-							
-							$.ajax({
-								url:"/cms/edit",
-								type:"POST",
-								data: JSON.stringify(data),
-								contentType:"application/json; charset=utf-8",
-								dataType:"json",
-								success: function(){
-									notif.html("Content saved !").fadeIn(500, function(){
-										window.setTimeout(function(){
-											notif.fadeOut(500);
-										}, 2000);
-									});
-								}
-							});
-						});
 				};
 				document.head.appendChild(script);		
 			}
@@ -367,4 +458,5 @@
 			return path;
 		}
 	});
+	
 }());
