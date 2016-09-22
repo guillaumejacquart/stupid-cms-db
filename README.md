@@ -27,7 +27,7 @@ npm install -g stupid-cms
  2. Go to your static site folder and serve using stupid-cms :
  
 ```
-stupid-cms -s --port 3000 --username login --password password [--dir SITEPATH (default to current dir)]
+stupid-cms -s --port 3000 [--dir SITEPATH (default to current dir)]
 ```
 
  3. Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
@@ -47,28 +47,11 @@ cd new_site;
 npm install;
 ```
 
- 3. Open app.js to change your options :
- 
-```
-var app = express();
-...
-var sitePath = path.join(__dirname, 'site');
-cms({
-	sitePath: sitePath,
-	index: 'index.html',
-	auth: {
-		type: 'basic',
-		username: 'login',
-		password: 'password'
-	}
-}, app);
-```
-
- 4. Put your website static files in ./site
- 5. Add the "data-content" attributes with a unique value.
- 6. Install the modules and run :
+ 3. Put your website static files in ./site
+ 4. Add the "data-content" attributes with a unique values to the tags you want to make editable.
+ 5. Install the modules and run :
 npm install & npm start
- 7. Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
+ 6. Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
 
 ### Using the middleware
 You can add a editable static site to any of your expressjs application using this middleware. Just add one configuration and pass your express app object to the cms :
@@ -79,21 +62,9 @@ var app = express();
 var sitePath = path.join(__dirname, 'site');
 cms({
 	sitePath: sitePath,
-	index: 'index.html',
-	auth: {
-		type: 'basic',
-		username: 'login',
-		password: 'password'
-	}
+	index: 'index.html'
 }, app);
 ```
 
 
-Then repeat steps 4 to 8 to edit your content
-
-
-Currently only basic auth is supported. More to come...
-## Roadmap
-
- - Add image edition (with upload)
- - Add more authentication configurations
+Then repeat steps 3 to 6 to edit your content
