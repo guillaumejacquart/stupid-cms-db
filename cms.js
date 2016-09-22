@@ -4,7 +4,9 @@ var fs = require("fs.extra");
 var cheerio = require("cheerio");
 var mustacheExpress = require("mustache-express");
 var Datastore = require("nedb");
-
+var passport = require("passport");
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 
 module.exports = function(options, app) {
 	
@@ -13,12 +15,18 @@ module.exports = function(options, app) {
 
 	// Register ".mustache" extension with The Mustache Express
 	app.engine("html", mustacheExpress());
+	app.use(cookieParser());
+	app.use(session({ 
+		secret: 'LxfMZq15',
+		resave: false,
+		saveUninitialized: true,
+	}));
 
 	app.set("view engine", "mustache");
 	app.set("views", path.join(__dirname, "views"));
 	
-	var dataDb = new Datastore({ filename: options.dbPath || "db.data", autoload: true });
-	options.dataDb = dataDb;
+	options.dataDb = new Datastore({ filename: path.join(options.dbPath || '.', "pages.data"), autoload: true });
+	options.userDb = new Datastore({ filename: path.join(options.dbPath || '.', "users.data"), autoload: true });
 	
 	var pageLoader = require("./lib/page_loader")(options);	
 	
@@ -27,9 +35,21 @@ module.exports = function(options, app) {
 	app.use(express.static(options.sitePath, {
 		extensions: [],
 		index: false
-	}));
+	}));	
+	
+	passport.serializeUser(function(user, done) {
+		done(null, user._id);
+	});
+
+	passport.deserializeUser(function(id, done) {
+		options.userDb.findOne({ _id: id }, function(err, user) {
+			done(err, user);
+		});
+	});
+	
+	app.use(passport.initialize());
+	app.use(passport.session());
 	
 	var routes = require("./lib/editor")(options);
-	
 	app.use("/cms", routes);
 };

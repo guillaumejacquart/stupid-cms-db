@@ -375,7 +375,11 @@
 						
 						$(".cms-export-page").click(function(){
 							window.location.href = "/cms/export";
-						});						
+						});		
+						
+						$(".cms-logout").click(function(){
+							window.location.href = "/cms/logout";
+						});					
 				
 						$('#cms_image_upload').change(function(){
 							var file = this.files[0];
