@@ -6,6 +6,7 @@ var mustacheExpress = require("mustache-express");
 var Datastore = require("nedb");
 var passport = require("passport");
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var session = require('express-session');
 
 module.exports = function(options, app) {
@@ -16,6 +17,8 @@ module.exports = function(options, app) {
 	// Register ".mustache" extension with The Mustache Express
 	app.engine("html", mustacheExpress());
 	app.use(cookieParser());
+	app.use(bodyParser.urlencoded({ extended: false }))
+	app.use(bodyParser.json());
 	app.use(session({ 
 		secret: 'LxfMZq15',
 		resave: false,
