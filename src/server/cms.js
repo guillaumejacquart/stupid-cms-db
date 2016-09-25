@@ -28,8 +28,8 @@ module.exports = function(options, app) {
 	app.set("view engine", "mustache");
 	app.set("views", path.join(__dirname, "views"));
 	
-	options.dataDb = new Datastore({ filename: path.join(options.dbPath || '.', "pages.data"), autoload: true });
-	options.userDb = new Datastore({ filename: path.join(options.dbPath || '.', "users.data"), autoload: true });
+	options.dataDb = new Datastore({ filename: path.join(options.dbPath || options.sitePath, "pages.data"), autoload: true });
+	options.userDb = new Datastore({ filename: path.join(options.dbPath || options.sitePath, "users.data"), autoload: true });
 	
 	var pageLoader = require("./lib/page_loader")(options);	
 	
