@@ -31,10 +31,6 @@ module.exports = function(options, app) {
 	options.dataDb = new Datastore({ filename: path.join(options.dbPath || '.', "pages.data"), autoload: true });
 	options.userDb = new Datastore({ filename: path.join(options.dbPath || '.', "users.data"), autoload: true });
 	
-	var pageLoader = require("./lib/page_loader")(options);	
-	
-	app.use(pageLoader);
-	
 	app.use(express.static(options.sitePath, {
 		extensions: [],
 		index: false
@@ -52,6 +48,9 @@ module.exports = function(options, app) {
 	
 	app.use(passport.initialize());
 	app.use(passport.session());
+	
+	var pageLoader = require("./lib/page_loader")(options);
+	app.use(pageLoader);
 	
 	var routes = require("./lib/editor")(options);
 	app.use("/cms", routes);
