@@ -3,8 +3,7 @@
   "version": "0.1.9",
   "private": false,
   "scripts": {
-    "start": "node ./sample/bin/www",
-    "install": "gulp dist"
+    "start": "node ./sample/bin/www"
   },
   "dependencies": {
     "ace-builds": "^1.2.5",
