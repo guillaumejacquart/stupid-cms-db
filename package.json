@@ -1,9 +1,10 @@
 {
   "name": "stupid-cms-db",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "private": false,
   "scripts": {
-    "start": "node ./sample/bin/www"
+    "start": "node ./sample/bin/www",
+	"prepublish": "gulp dist"
   },
   "dependencies": {
     "ace-builds": "^1.2.5",
