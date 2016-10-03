@@ -10,27 +10,11 @@ var multer = require("multer");
 var unzip = require("unzip");
 var uploadImage = multer({ dest: __dirname + "/../uploads-image/" });
 var uploadSite = multer({ dest: __dirname + "/../uploads-site/" });
-var passport = require("passport")
-  , LocalStrategy = require("passport-local").Strategy;
+var passport = require("passport");
 
 var options,
 	dataManager,
 	userManager;
-
-passport.use(new LocalStrategy(
-	function(username, password, done) {
-		userManager.findOne(username, function (err, user) {
-			if (err) { return done(err); }
-			if (!user) {
-				return done(null, false, { message: "Incorrect username." });
-			}
-			if (!userManager.validatePassword(user, password)) {
-				return done(null, false, { message: "Incorrect password." });
-			}
-			return done(null, user);
-		});
-	}
-));
 
 var isAuthenticated = function(req, res, next){	
 	if (req.isAuthenticated())

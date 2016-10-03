@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>ACE in Action</title>
+	<link rel="stylesheet" href="/cms/css/dependencies.css">
+	<link rel="stylesheet" href="/cms/css/app.css">
+	<script src="/cms/js/dependencies.js"></script>
+	<style>
+		html{
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+<body id="cms-editor">
+	<div id="cms-editor-pages">
+		<ul>
+		{{#pages}}
+			<li>{{.}}</li>
+		{{/pages}}
+		</ul>
+	</div>
+	<div id="cms-editor-wrapper">
+		<textarea id="cms-editor-code">{{code}}</textarea>
+	</div>
+	<div id="cms-editor-preview">
+		<iframe src="/{{url}}"></iframe>
+	</div>
+	<script>	
+      var editor = CodeMirror.fromTextArea(document.getElementById("cms-editor-code"), {
+        mode: "htmlmixed",
+		lineNumbers: true,
+        selectionPointer: true
+      });    
+	</script>
+</body>
+</html>

@@ -44,7 +44,8 @@ var cssNPMDependencies = [
 
 var jsDependencies = [
     'codemirror/lib/codemirror.js',
-    'codemirror/mode/htmlembedded/htmlembedded.js'
+    'codemirror/mode/xml/xml.js',
+    'codemirror/mode/htmlmixed/htmlmixed.js'
 ];
 
 var tinyMceDependencies = [

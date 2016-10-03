@@ -7,6 +7,8 @@ var passport = require("passport");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var passport = require("passport")
+  , LocalStrategy = require("passport-local").Strategy;
 
 module.exports = function(options, app) {
 	
@@ -47,7 +49,26 @@ module.exports = function(options, app) {
 	});
 	
 	app.use(passport.initialize());
-	app.use(passport.session());
+	app.use(passport.session());	
+	
+	var userManager = require("./lib/user_manager")(options.userDb);
+	passport.use(new LocalStrategy(
+		function(username, password, done) {
+			userManager.findOne(username, function (err, user) {
+				if (err) { return done(err); }
+				if (!user) {
+					return done(null, false, { message: "Incorrect username." });
+				}
+				if (!userManager.validatePassword(user, password)) {
+					return done(null, false, { message: "Incorrect password." });
+				}
+				return done(null, user);
+			});
+		}
+	));
+	
+	var pageEditor = require("./lib/page_editor")(options);
+	app.use("/editor", pageEditor);
 	
 	var pageLoader = require("./lib/page_loader")(options);
 	app.use(pageLoader);
