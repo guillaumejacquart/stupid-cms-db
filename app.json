@@ -1,0 +1,7 @@
+{
+  "name": "Stupid CMS",
+  "description": "A stupid CMS with inline editing",
+  "repository": "https://github.com/guillaumejacquart/stupid-cms-db.git",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "express", "static", "cms"]
+}

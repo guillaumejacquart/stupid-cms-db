@@ -50,6 +50,9 @@
     "type": "git",
     "url": "git+https://github.com/guillaumejacquart/stupid-cms-db.git"
   },
+  "engines": {
+    "node": "0.4.x"
+  },
   "keywords": [
     "static",
     "cms",
