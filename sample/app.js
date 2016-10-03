@@ -7,7 +7,8 @@ var app = express();
 var sitePath = path.join(__dirname, "site");
 cms({
 	sitePath,
-	index: "index.html"
+	index: "index.html",
+	dbPath: __dirname
 }, app);
 
 module.exports = app;

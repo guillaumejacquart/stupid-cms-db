@@ -1,4 +1,4 @@
-var fs = require("fs.extra");
+var fs = require("fs-extra");
 var cheerio = require("cheerio");
 var uuid = require("node-uuid");
 

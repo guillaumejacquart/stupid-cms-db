@@ -6,6 +6,8 @@
 			var cms,
 				notif;
 			
+			$('head').append('<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssnormalize-context/cssnormalize-context-min.css">');
+			
 			function displayNotif(content, type){
 				notif.html(content)
 					.addClass(type)
@@ -363,7 +365,7 @@
 						cms.append(response);
 				
 						$(".cms-admin-handle").click(function(){
-							$(".cms-admin").toggleClass("extended");
+							$(".cms-admin-content").toggleClass("extended");
 						});
 						
 						$(".cms-edit-page").click(function(){
@@ -376,7 +378,7 @@
 						
 						$(".cms-logout").click(function(){
 							window.location.href = "/cms/logout";
-						});					
+						});
 				
 						$('#cms_image_upload').change(function(){
 							var file = this.files[0];
@@ -390,7 +392,7 @@
 								var formData = new FormData($('#cms_form_file')[0]);
 					
 								$.ajax({
-									url: "/cms/upload",
+									url: "/cms/upload-image",
 									type: "POST",
 									data: formData,
 									async: false,
@@ -405,6 +407,32 @@
 							} else {
 								alert('Le fichier doit etre une image') 
 							}
+						});
+				
+						$('#cms_site_upload').change(function(){
+							var file = this.files[0];
+							var name = file.name;
+							var size = file.size;
+							var type = file.type;
+							
+							var formData = new FormData($('#cms-import-form')[0]);
+				
+							$.ajax({
+								url: "/cms/upload-site",
+								type: "POST",
+								data: formData,
+								async: false,
+								success: function (msg) {
+									location.reload();					
+								},
+								cache: false,
+								contentType: false,
+								processData: false
+							});
+						});
+						
+						$(".cms-import-page").click(function(){
+							$(".cms-admin-import").toggleClass('extended');
 						});
 						
 						$.get("/cms/metadata?page=" + page, function(response) {

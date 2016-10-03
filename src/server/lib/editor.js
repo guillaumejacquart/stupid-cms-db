@@ -1,15 +1,17 @@
 var express = require("express");
-var fs = require("fs.extra");
+var fs = require("fs-extra");
 var cheerio = require("cheerio");
 var router = express.Router();
 var url = require("url");
 var path = require("path");
 var uuid = require("node-uuid");
-var exporter = require('./site_exporter');
-var multer = require('multer');
-var upload = multer({ dest: __dirname + '/../uploads/' })
-var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
+var exporter = require("./site_exporter");
+var multer = require("multer");
+var unzip = require("unzip");
+var uploadImage = multer({ dest: __dirname + "/../uploads-image/" });
+var uploadSite = multer({ dest: __dirname + "/../uploads-site/" });
+var passport = require("passport")
+  , LocalStrategy = require("passport-local").Strategy;
 
 var options,
 	dataManager,
@@ -20,10 +22,10 @@ passport.use(new LocalStrategy(
 		userManager.findOne(username, function (err, user) {
 			if (err) { return done(err); }
 			if (!user) {
-				return done(null, false, { message: 'Incorrect username.' });
+				return done(null, false, { message: "Incorrect username." });
 			}
 			if (!userManager.validatePassword(user, password)) {
-				return done(null, false, { message: 'Incorrect password.' });
+				return done(null, false, { message: "Incorrect password." });
 			}
 			return done(null, user);
 		});
@@ -52,7 +54,7 @@ router.get("/login", function(req, res, next) {
 });
 
 /* Post login page. */
-router.post("/login", passport.authenticate('local'), function(req, res, next) {
+router.post("/login", passport.authenticate("local"), function(req, res, next) {
 	res.redirect("/");
 });
 
@@ -68,8 +70,8 @@ router.post("/register", function(req, res, next) {
 				return res.render("register.html", {info: "Sorry. That username already exists. Try again."});
 			}
 			
-			passport.authenticate('local')(req, res, function () {
-				res.redirect('/');
+			passport.authenticate("local")(req, res, function () {
+				res.redirect("/");
 			});
 		});
 	});
@@ -140,10 +142,29 @@ router.post("/edit-page", isAuthenticated, function(req, res, next) {
 });
 
 /* POST upload image. */
-router.post("/upload", upload.single('cms_image_upload'), function(req, res, next) {		
+router.post("/upload-image", uploadImage.single("cms_image_upload"), function(req, res, next) {		
 	res.json({
-		path: 'uploads/' + req.file.filename
+		path: "uploads-image/" + req.file.filename
 	});
+});
+
+/* POST upload site files. */
+router.post("/upload-site", uploadSite.single("cms_site_upload"), function(req, res, next) {		
+	var file = req.file.path;
+	fs.emptyDir(options.sitePath, function (err) {
+		if (err){
+			throw err;
+		}
+		
+		fs.createReadStream(file).pipe(unzip.Extract({ 
+			path: options.sitePath 
+		})).on('close', function(){		
+			res.json({
+				status: "OK"
+			});
+		});
+	})
+	
 });
 
 /* GET upload image. */
@@ -152,15 +173,15 @@ router.get("/export", isAuthenticated, function(req, res, next) {
 		var stat = fs.statSync(exportFile);
 
 		res.writeHead(200, {
-			'Content-Type': 'application/zip',
-			'Content-Length': stat.size
+			"Content-Type": "application/zip",
+			"Content-Length": stat.size
 		});
 
 		var readStream = fs.createReadStream(exportFile);
 		readStream.pipe(res);
 		
 		//once the file is sent, send 200 and delete the file from the server
-		readStream.on('end', function ()
+		readStream.on("end", function ()
 		{
 			fs.remove(exportFile);
 			return res.status(200);

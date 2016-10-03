@@ -1,6 +1,6 @@
 var express = require("express");
 var path = require("path");
-var fs = require("fs.extra");
+var fs = require("fs-extra");
 var cheerio = require("cheerio");
 
 module.exports = function(options) {

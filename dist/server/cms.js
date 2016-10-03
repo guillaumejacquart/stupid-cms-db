@@ -1,6 +1,5 @@
 var express = require("express");
 var path = require("path");
-var fs = require("fs.extra");
 var cheerio = require("cheerio");
 var mustacheExpress = require("mustache-express");
 var Datastore = require("nedb");
@@ -26,6 +25,7 @@ module.exports = function(options, app) {
 	}));
 
 	app.set("view engine", "mustache");
+	app.set("view cache", false);
 	app.set("views", path.join(__dirname, "views"));
 	
 	options.dataDb = new Datastore({ filename: path.join(options.dbPath || options.sitePath, "pages.data"), autoload: true });

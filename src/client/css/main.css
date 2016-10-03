@@ -1,35 +1,43 @@
 .cms-admin{
 	position:fixed;
-	overflow: hidden;
 	top:5px;
 	right:5px;
-	width:66px;
-	height: 66px;
     z-index: 9998;
-	transition: 1s ease height;
 }
 
 .cms-admin.extended {
 	position:fixed;
-	height: 400px;
-	width:270px;
+	height: auto;
+	max-height: 400px;
+	width:auto;
     color: white;
-	transition: 1s ease height;
+	overflow:visible;
 }
 
 .cms-admin-content{
-	position:absolute;
-	height: 300px;	
+	position:relative;
 	right: 0;
 	padding: 5px;
+	opacity: 0;
+	transition: 1s ease opacity;
+}
+
+.cms-admin-content.extended{
+	opacity: 1;
+	transition: 1s ease opacity;
 }
 
 .cms-admin-content .actions{
 	position:relative;
-	height: 100%;
 }
 
-.cms-admin .actions button{
+.cms-admin .cms-action-wrapper{
+    display: block;
+	position:relative;
+	transition: 0.7s ease background-color;
+}
+
+.cms-admin button.cms-actions-button {
     display: block;
 	position:relative;
 	border: 1px solid #888;
@@ -44,7 +52,7 @@
 	transition: 0.7s ease background-color;
 }
 
-.cms-admin .actions button.cms-admin-handle{
+.cms-admin button.cms-admin-handle{
 	background-color: #477186;
 	border-radius: 50%;
 	text-align:center;
@@ -54,22 +62,22 @@
 	padding: 10px;
 }
 
-.cms-admin .actions button:hover{
+.cms-admin button.cms-actions-button:hover{
 	cursor:pointer;
 	box-shadow: 0px 0px 4px #aaa;	
 	background-color: #3C885D;
 	transition: 0.7s ease background-color;
 }
 
-.cms-admin .actions button.cms-admin-handle:hover{
+.cms-admin button.cms-admin-handle:hover{
 	background-color: #376176;
 }
 
-.cms-admin .actions button:active, .cms-admin button:focus{
+.cms-admin button.cms-actions-button:active, .cms-admin button.cms-actions-button:focus{
 	outline:none;
 }
 
-.cms-admin .actions button > i{
+.cms-admin button.cms-actions-button > i{
 	font-size:16px;
 }
 
