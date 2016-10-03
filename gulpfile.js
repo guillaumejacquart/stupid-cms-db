@@ -43,6 +43,7 @@ var cssNPMDependencies = [
 ];
 
 var jsDependencies = [
+	'jquery/dist/jquery.min.js',
     'codemirror/lib/codemirror.js',
     'codemirror/mode/xml/xml.js',
     'codemirror/mode/htmlmixed/htmlmixed.js'

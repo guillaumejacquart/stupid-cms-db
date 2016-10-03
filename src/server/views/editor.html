@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="/cms/css/dependencies.css">
 	<link rel="stylesheet" href="/cms/css/app.css">
 	<script src="/cms/js/dependencies.js"></script>
+	<script src="/cms/js/app.js"></script>
 	<style>
 		html{
 			width: 100%;
@@ -16,22 +17,18 @@
 	<div id="cms-editor-pages">
 		<ul>
 		{{#pages}}
-			<li>{{.}}</li>
+			<li><a href="/editor?url={{.}}">{{.}}</a></li>
 		{{/pages}}
 		</ul>
+		<button class="cms-save-page">Save</button>
+		<a href="/">Return to site</a>
 	</div>
 	<div id="cms-editor-wrapper">
 		<textarea id="cms-editor-code">{{code}}</textarea>
 	</div>
 	<div id="cms-editor-preview">
-		<iframe src="/{{url}}"></iframe>
+		<iframe src="/{{page}}"></iframe>
 	</div>
-	<script>	
-      var editor = CodeMirror.fromTextArea(document.getElementById("cms-editor-code"), {
-        mode: "htmlmixed",
-		lineNumbers: true,
-        selectionPointer: true
-      });    
-	</script>
+	<input type="hidden" id="cms-page" value="{{page}}"/>
 </body>
 </html>

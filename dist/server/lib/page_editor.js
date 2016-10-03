@@ -8,7 +8,7 @@ var isAuthenticated = function(req, res, next){
 	if (req.isAuthenticated())
 		return next();
 	
-	res.redirect(401, "/cms/login");
+	res.redirect("/cms/login");
 }
 
 module.exports = function(options) {
@@ -16,9 +16,8 @@ module.exports = function(options) {
 	var dataDb = options.dataDb;
 	
 	var router = express.Router();
-	router.get("/", function (req, res, next) {
-		console.log(req);
-		var url = req.params.url;	
+	router.get("/", isAuthenticated, function (req, res, next) {
+		var url = req.query.url;
 		url = url || options.index;
 		
 		console.log("requesting url : " + url);			
@@ -53,6 +52,26 @@ module.exports = function(options) {
 				});
 			});
 		});
+		return;
+	});
+	
+	router.post("/", isAuthenticated, function (req, res, next) {
+		var page = req.query.page;
+		var html = req.body.html;
+		console.log("Saving page : " + page);
+					
+		var filepath = path.join(options.sitePath, page);
+		fs.writeFile(filepath, html, function(err){
+			if(err){
+				throw err;
+				return;
+			}
+			
+			res.json({
+				status: "OK"
+			})
+		});
+		return;
 	});
 	
 	return router;

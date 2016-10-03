@@ -1,5 +1,9 @@
 (function () {
 	$(document).ready(function(){
+		if($("#cms-page-name").length === 0){
+			return;
+		}
+		
 		var page = $("#cms-page-name").val();
 	
 		$.get("/cms/user?page=" + page, function(response) {			
