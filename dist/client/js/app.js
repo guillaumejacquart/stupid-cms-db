@@ -1,4 +1,7 @@
 (function () {
+	
+	window.jQuery || document.write("<script src= \"https://code.jquery.com/jquery-2.2.4.min.js\"><\/script>")
+		
 	$(document).ready(function(){
 		if($("#cms-page-name").length === 0){
 			return;
