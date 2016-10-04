@@ -1,6 +1,6 @@
 {
   "name": "stupid-cms-db",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "private": false,
   "scripts": {
     "start": "node ./sample/bin/www",
@@ -28,7 +28,6 @@
     "gulp-notify": "^2.2.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-typescript": "^3.0.1",
-    "jquery": "^2.2.4",
     "mkdirp": "^0.5.1",
     "morgan": "^1.6.1",
     "multer": "^1.2.0",
