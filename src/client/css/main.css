@@ -52,6 +52,11 @@
 	transition: 0.7s ease background-color;
 }
 
+.cms-admin button.cms-actions-button a {
+    color: white;
+	text-decoration:none;
+}
+
 .cms-admin button.cms-admin-handle{
 	background-color: #477186;
 	border-radius: 50%;

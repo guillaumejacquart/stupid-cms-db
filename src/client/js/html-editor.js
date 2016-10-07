@@ -1,4 +1,9 @@
 (function () {
+	
+	if(typeof($) === 'undefined') {
+		return;
+	}
+	
 	$(document).ready(function(){
 		if(!$("#cms-editor-code").length){
 			return;

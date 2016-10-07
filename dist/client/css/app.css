@@ -1,3 +1,7 @@
+body{
+	font-family: helvetica;
+}
+
 .CodeMirror{
 	height: 100%;
 }
@@ -12,18 +16,56 @@
 #cms-editor-pages{
 	width: 10%;
 	float: left;
-	height: 100%;	
+	height: 100%;
+	background-color: rgba(255,255,255,0.7);
+}
+
+#cms-editor-pages h2{
+	font-size: 16px;
+	margin: 0;
+	padding: 10px;
+	background-color: rgba(0,0,0,0.8);
+	color: #eee;
+}
+
+.cms-save-page {
+	display:block;
+	background-color: rgba(0,0,0,0.8);
+	text-align:center;
+	margin: 10px;
+	color: white;
+	width: 85%;
+	border: none;
+	padding: 8px;
+	cursor: pointer;
+}
+
+.cms-editor-return{
+	text-align: center;
+	width: 100%;
+	display:block;
+}
+
+#cms-editor-pages ul{
+	list-style-type: none;
+	padding:0;
+}
+
+#cms-editor-pages li{
+	padding:8px 15px;
 }
 
 #cms-editor-wrapper{
+	margin-left: -1px;
+	border-left: 1px solid #666;
 	width: 45%;
 	float: left;
 	height: 100%;
 }
 
 #cms-editor-preview{
-	width: 45%;
-	float: right;
+	width: 44.5%;
+	float: left;
 	height: 100%;
 }
 
@@ -95,6 +137,11 @@ body{
     color: white;
 	padding: 10px;	
 	transition: 0.7s ease background-color;
+}
+
+.cms-admin button.cms-actions-button a {
+    color: white;
+	text-decoration:none;
 }
 
 .cms-admin button.cms-admin-handle{
