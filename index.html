@@ -24,6 +24,11 @@
 
 <p>A stupidly simple CMS to make static sites editable without compromising your original static files.</p>
 
+<p><img src="https://codeship.com/projects/77c806e0-42bd-0134-297e-6295fca7620e/status?branch=master" alt="Codeship" title="Codeship">
+<a href="https://www.codacy.com/app/guillaume-jacquart/stupid-cms-db?utm_source=github.com&amp;amp;utm_medium=referral&amp;amp;utm_content=guillaumejacquart/stupid-cms-db&amp;amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/b5a95265fda942e6be4e5ec1ea94a044" alt="Codacy Badge"></a></p>
+
+<p><a href="https://heroku.com/deploy"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy"></a></p>
+
 <h2>
 <a id="demo" class="anchor" href="#demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo</h2>
 
@@ -54,7 +59,7 @@ To edit the content, go to : <a href="http://stupid-cms.dynalias.org/cms/login">
 <li>Go to your static site folder and serve using stupid-cms :</li>
 </ol>
 
-<pre><code>stupid-cms -s --port 3000 --username login --password password [--dir SITEPATH (default to current dir)]
+<pre><code>stupid-cms -s --port 3000 [--dir SITEPATH (default to current dir)]
 </code></pre>
 
 <ol>
@@ -81,26 +86,8 @@ npm install;
 </code></pre>
 
 <ol>
-<li>Open app.js to change your options :</li>
-</ol>
-
-<pre><code>var app = express();
-...
-var sitePath = path.join(__dirname, 'site');
-cms({
-    sitePath: sitePath,
-    index: 'index.html',
-    auth: {
-        type: 'basic',
-        username: 'login',
-        password: 'password'
-    }
-}, app);
-</code></pre>
-
-<ol>
 <li>Put your website static files in ./site</li>
-<li>Add the "data-content" attributes with a unique value.</li>
+<li>Add the "data-content" attributes with a unique values to the tags you want to make editable.</li>
 <li>Install the modules and run :
 npm install &amp; npm start</li>
 <li>Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.</li>
@@ -117,26 +104,11 @@ npm install &amp; npm start</li>
 var sitePath = path.join(__dirname, 'site');
 cms({
     sitePath: sitePath,
-    index: 'index.html',
-    auth: {
-        type: 'basic',
-        username: 'login',
-        password: 'password'
-    }
+    index: 'index.html'
 }, app);
 </code></pre>
 
-<p>Then repeat steps 4 to 8 to edit your content</p>
-
-<p>Currently only basic auth is supported. More to come...</p>
-
-<h2>
-<a id="roadmap" class="anchor" href="#roadmap" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Roadmap</h2>
-
-<ul>
-<li>Add image edition (with upload)</li>
-<li>Add more authentication configurations</li>
-</ul>
+<p>Then repeat steps 3 to 6 to edit your content</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/guillaumejacquart/stupid-cms-db">Stupid-cms-db</a> is maintained by <a href="https://github.com/guillaumejacquart">guillaumejacquart</a>.</span>
