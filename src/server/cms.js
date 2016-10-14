@@ -1,5 +1,6 @@
 var express = require("express");
 var path = require("path");
+var fs = require("fs-extra");
 var cheerio = require("cheerio");
 var mustacheExpress = require("mustache-express");
 var Datastore = require("nedb");
@@ -32,11 +33,6 @@ module.exports = function(options, app) {
 	
 	options.dataDb = new Datastore({ filename: path.join(options.dbPath || options.sitePath, "pages.data"), autoload: true });
 	options.userDb = new Datastore({ filename: path.join(options.dbPath || options.sitePath, "users.data"), autoload: true });
-	
-	app.use(express.static(options.sitePath, {
-		extensions: [],
-		index: false
-	}));	
 	
 	passport.serializeUser(function(user, done) {
 		done(null, user._id);
@@ -72,6 +68,17 @@ module.exports = function(options, app) {
 	
 	var pageLoader = require("./lib/page_loader")(options);
 	app.use(pageLoader);
+	
+	var publicDir = path.join(__dirname, "public");
+	fs.stat(publicDir, function (err, stats){
+		if (err) {
+			fs.copy(options.sitePath, publicDir, function (err) {
+				if (err) return console.error(err);
+			});
+		}
+	});
+	
+	app.use("/", express.static(publicDir));	
 	
 	var routes = require("./lib/editor")(options);
 	app.use("/cms", routes);

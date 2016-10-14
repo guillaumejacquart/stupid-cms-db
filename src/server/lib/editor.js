@@ -14,7 +14,8 @@ var passport = require("passport");
 
 var options,
 	dataManager,
-	userManager;
+	userManager,
+	exportManager;
 
 var isAuthenticated = function(req, res, next){	
 	if (req.isAuthenticated())
@@ -31,7 +32,7 @@ router.get("/login", function(req, res, next) {
 		}
 		
 		if(req.isAuthenticated()){
-			return res.redirect("/");
+			return res.redirect("/cms/page");
 		}
 		res.render("login.html");
 	});	
@@ -121,7 +122,9 @@ router.post("/edit-page", isAuthenticated, function(req, res, next) {
 		if(err) {
 			throw err;
 		}
-		res.status(200).json({status: "OK"});
+		exportManager.exportSite(path.join(__dirname, "../public"), function(folder){			
+			res.status(200).json({status: "OK"});
+		});
 	});
 });
 
@@ -153,23 +156,25 @@ router.post("/upload-site", uploadSite.single("cms_site_upload"), function(req, 
 
 /* GET upload image. */
 router.get("/export", isAuthenticated, function(req, res, next) {
-	exporter(options).exportSite(function(exportFile){
-		var stat = fs.statSync(exportFile);
+	exportManager.exportSite(uuid.v4(), function(folder){
+		exportManager.generateZip(folder, function(exportFile){
+			var stat = fs.statSync(exportFile);
 
-		res.writeHead(200, {
-			"Content-Type": "application/zip",
-			"Content-Length": stat.size
-		});
+			res.writeHead(200, {
+				"Content-Type": "application/zip",
+				"Content-Length": stat.size
+			});
 
-		var readStream = fs.createReadStream(exportFile);
-		readStream.pipe(res);
-		
-		//once the file is sent, send 200 and delete the file from the server
-		readStream.on("end", function ()
-		{
-			fs.remove(exportFile);
-			return res.status(200);
-		});
+			var readStream = fs.createReadStream(exportFile);
+			readStream.pipe(res);
+			
+			//once the file is sent, send 200 and delete the file from the server
+			readStream.on("end", function ()
+			{
+				fs.remove(exportFile);
+				return res.status(200);
+			});
+		})
 	});
 });
 
@@ -224,6 +229,7 @@ module.exports = function(opt){
 	
 	dataManager = require("./data_manager")(options.dataDb);
 	userManager = require("./user_manager")(options.userDb);
+	exportManager = exporter(options);
 
 	return router;
 };

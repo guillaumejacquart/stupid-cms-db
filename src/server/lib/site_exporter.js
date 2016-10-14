@@ -2,20 +2,18 @@ var express = require("express");
 var path = require("path");
 var fs = require("fs-extra");
 var cheerio = require("cheerio");
-var uuid = require('node-uuid');
 var copydir = require('copy-dir');
 var async = require('async');
+var uuid = require("node-uuid");
 var EasyZip = require('easy-zip').EasyZip;
 
 var dataDb,
 	sitePath,
 	exports = path.join(__dirname, "../exports");
 
-function exportSite(exportCallback) {
-	var new_folder = path.join(exports, uuid.v4());
-			
-	copydir(sitePath, new_folder, function(err) {
-		fs.readdir(new_folder, function(err, files){
+function exportSite(exportFolder, exportCallback) {			
+	copydir(sitePath, exportFolder, function(err) {
+		fs.readdir(exportFolder, function(err, files){
 			console.log(files);			
 			var list = files.filter(function(l){
 				return l.endsWith('.html');
@@ -26,7 +24,7 @@ function exportSite(exportCallback) {
 				async.filter(docs, function(doc, callback) {					
 					var page = doc.page;
 					
-					var filepath = path.join(new_folder, page);
+					var filepath = path.join(exportFolder, page);
 					fs.readFile(filepath, "utf8", function(err, data){					
 						$ = cheerio.load(data);					
 						
@@ -67,13 +65,12 @@ function exportSite(exportCallback) {
 						}
 						
 						fs.writeFile (filepath, $.html(), function(err) {
-							handledHtml++;							
 							if (err) throw err;							
 							callback(null);
 						});
 					});
 				}, function(err, results){
-					generateZip(new_folder, exportCallback);
+					exportCallback(exportFolder);
 				});
 			});
 		});
@@ -104,6 +101,7 @@ module.exports = function(options) {
 	sitePath = options.sitePath;
 	
 	return {
-		exportSite
+		exportSite,
+		generateZip
 	};
 };
