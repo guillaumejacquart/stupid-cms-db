@@ -8,7 +8,7 @@ module.exports = function(options) {
 	var dataDb = options.dataDb;
 	
 	var router = express.Router();
-	router.get("/:url?", function (req, res, next) {
+	router.get("/:url?", function (req, res, next) {		
 		var url = req.params.url;	
 		url = url || options.index;
 		

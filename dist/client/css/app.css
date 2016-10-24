@@ -130,13 +130,21 @@ body{
 	border: 1px solid #888;
 	border-radius: 50%;
 	margin: 10px auto 0;
+	min-width: 0;
 	width:54px;
 	height: 54px;
 	overflow:hidden;
 	background-color: #4C986D;
-    color: white;
-	padding: 10px;	
+    color: white !important;
+	padding: 10px;
+	letter-spacing: 0;
+	box-shadow: none;
 	transition: 0.7s ease background-color;
+}
+
+.mce-btn button{
+	min-width: 0;
+	color: #333 !important;
 }
 
 .cms-admin button.cms-actions-button a {
@@ -183,6 +191,7 @@ body{
 	border: 2px solid #FCE4A6;
 	border-radius: 10px;
 	opacity: 0;
+	display: none;
 	transition: 0.5s ease opacity;
 }
 
@@ -191,17 +200,25 @@ body{
 	height: auto;
 }
 
+.cms-admin-panel .cms-submit-wrapper{
+	text-align: right;
+	margin-top: 10px;
+}
+
 .cms-admin-panel button[type="submit"]{
-	position:absolute;
 	right: 10px;
 	bottom: 10px;
 	padding: 5px 10px;
 	border:none;
 	background-color: #4C986D;
 	cursor: pointer;
+	width: auto;
+    height: auto;
+    min-width: 0;
 }
 
-.cms-admin-panel.extended{
+.cms-admin-panel.extended{	
+	display: block;
 	opacity: 1;
 	transition: 0.5s ease opacity;
 }

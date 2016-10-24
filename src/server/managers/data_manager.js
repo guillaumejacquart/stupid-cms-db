@@ -48,7 +48,7 @@ function getMetadata(page, callback){
 }
 
 function saveMetadata(metadata, page, callback){	
-	dataDb.update({ page: page }, { $set: { metadata: metadata } }, function (err, numReplaced) {	
+	dataDb.update({ page: page }, { $set: { metadata: metadata } }, { upsert: true }, function (err, numReplaced) {	
 		callback(err);
 	});
 };

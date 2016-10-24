@@ -47,7 +47,7 @@ module.exports = function(options, app) {
 	app.use(passport.initialize());
 	app.use(passport.session());	
 	
-	var userManager = require("./lib/user_manager")(options.userDb);
+	var userManager = require("./managers/user_manager")(options.userDb);
 	passport.use(new LocalStrategy(
 		function(username, password, done) {
 			userManager.findOne(username, function (err, user) {
@@ -63,10 +63,10 @@ module.exports = function(options, app) {
 		}
 	));
 	
-	var pageEditor = require("./lib/page_editor")(options);
+	var pageEditor = require("./routes/page_editor")(options);
 	app.use("/editor", pageEditor);
 	
-	var pageLoader = require("./lib/page_loader")(options);
+	var pageLoader = require("./routes/page_loader")(options);
 	app.use(pageLoader);
 	
 	var publicDir = path.join(__dirname, "public");
@@ -78,8 +78,11 @@ module.exports = function(options, app) {
 		}
 	});
 	
-	app.use("/", express.static(publicDir));	
+	app.use("/", express.static(publicDir));
 	
-	var routes = require("./lib/editor")(options);
-	app.use("/cms", routes);
+	var userRoute = require("./routes/user")(options);
+	app.use("/cms", userRoute);
+	
+	var cmsRoute = require("./routes/cms")(options);
+	app.use("/cms", cmsRoute);
 };

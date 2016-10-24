@@ -1,8 +1,16 @@
 {
   "_args": [
     [
-      "tinymce@^4.4.3",
-      "C:\\Users\\guillaume\\Source\\Repos\\stupid-cms-db"
+      {
+        "raw": "tinymce@^4.4.3",
+        "scope": null,
+        "escapedName": "tinymce",
+        "name": "tinymce",
+        "rawSpec": "^4.4.3",
+        "spec": ">=4.4.3 <5.0.0",
+        "type": "range"
+      },
+      "C:\\Users\\guillaume\\Sources\\stupid-cms-db"
     ]
   ],
   "_from": "tinymce@>=4.4.3 <5.0.0",
@@ -16,16 +24,17 @@
     "tmp": "tmp/tinymce-4.4.3.tgz_1472730612658_0.06911972630769014"
   },
   "_npmUser": {
-    "email": "is-accounts@ephox.com",
-    "name": "ephox"
+    "name": "ephox",
+    "email": "is-accounts@ephox.com"
   },
   "_npmVersion": "3.8.6",
   "_phantomChildren": {},
   "_requested": {
-    "name": "tinymce",
     "raw": "tinymce@^4.4.3",
-    "rawSpec": "^4.4.3",
     "scope": null,
+    "escapedName": "tinymce",
+    "name": "tinymce",
+    "rawSpec": "^4.4.3",
     "spec": ">=4.4.3 <5.0.0",
     "type": "range"
   },
@@ -36,7 +45,7 @@
   "_shasum": "63df0fb3ff90aedab506b7c451034bb5ea192cb1",
   "_shrinkwrap": null,
   "_spec": "tinymce@^4.4.3",
-  "_where": "C:\\Users\\guillaume\\Source\\Repos\\stupid-cms-db",
+  "_where": "C:\\Users\\guillaume\\Sources\\stupid-cms-db",
   "bugs": {
     "url": "http://www.tinymce.com/develop/bugtracker.php"
   },
@@ -59,12 +68,12 @@
   "license": "LGPL-2.1",
   "maintainers": [
     {
-      "email": "is-accounts@ephox.com",
-      "name": "ephox"
+      "name": "ephox",
+      "email": "is-accounts@ephox.com"
     },
     {
-      "email": "spocke@moxiecode.com",
-      "name": "spocke"
+      "name": "spocke",
+      "email": "spocke@moxiecode.com"
     }
   ],
   "name": "tinymce",

@@ -39,17 +39,23 @@
 				}
 				
 				function initCreateEditable(){
-					$("div, ul, ol, h1, h2, h3, h4, h5, p")
-					.unbind('mouseenter mouseleave')
+					$(window).click(function(e){	
+						$(".cms-new-content").remove();						
+						elems.removeClass('cms-creatable');
+					});
+					var elems = $("div, ul, ol, h1, h2, h3, h4, h5, p");
+					
+					elems.unbind('click')
 					.removeClass('cms-creatable')
 					.filter(function(){
 						return !$(this).closest("[data-content]").length 
 							&& !$(this).find("[data-content]").length
 							&& !$(this).closest(".stupid-cms").length;
 					})
-					.hover(function(){
+					.click(function(e){
+						e.stopPropagation();
 						var elem = $(this);
-						var path = elem.getPath();
+						var path = getPath(elem);
 						
 						elem.addClass('cms-creatable');
 						if($(".cms-new-content").filter(function(){
@@ -64,21 +70,11 @@
 						
 						handle.css({
 							top: elem.offset().top,
-							left: elem.width() + elem.offset().left - 25,
+							left: elem.outerWidth() + elem.offset().left - 25,
 						});
 						
 						handle.data("path", path);
 						cms.append(handle);
-					}, function(e){	
-						var elem = $(this);	
-						var path = elem.getPath();
-						if(!$(e.relatedTarget).hasClass("cms-create")){
-							$(".cms-new-content").filter(function(){
-								return $(this).data("path") === path;
-							}).remove();
-							
-							elem.removeClass('cms-creatable');
-						}
 					});
 					
 					cms.on("click", ".cms-create", function(){
@@ -103,9 +99,6 @@
 								initTinymce();
 							}
 						});
-					})
-					.on("mouseleave", ".cms-create", function(){
-						$(this).closest(".cms-new-content").remove();
 					});
 				}
 				
@@ -371,7 +364,15 @@
 							cms.append(response);
 					
 							$(".cms-admin-handle").click(function(){
-								$(".cms-admin-content").toggleClass("extended");
+								var admin = $(".cms-admin-content");
+								var extended = admin.hasClass("extended");
+								
+								admin.toggleClass("extended")
+								if(extended){
+									admin
+										.find(".cms-admin-panel")
+										.removeClass("extended");
+								}
 							});
 							
 							$(".cms-edit-page").click(function(){
@@ -444,6 +445,7 @@
 							$.get("/cms/metadata?page=" + page, function(response) {
 								if(response){
 									$("#cms-page-url").val(response.url);
+									$("#cms-page-title").val(response.title);
 									$(".cms-edit-metadata").click(function(){
 										$(".cms-admin-metadata").toggleClass('extended');
 									});
@@ -473,34 +475,32 @@
 			});
 		});
 
-		jQuery.fn.extend({
-			getPath: function () {
-				var path, node = this;
-				while (node.length) {
-					var realNode = node[0], name = realNode.localName;
-					if (!name) {
-						break;
+		function getPath(node) {
+			var path;
+			while (node.length) {
+				var realNode = node[0], name = realNode.localName;
+				if (!name) {
+					break;
+				}
+				name = name.toLowerCase();
+
+				var parent = node.parent();
+
+				var sameTagSiblings = parent.children(name);
+				if (sameTagSiblings.length > 1) { 
+					var allSiblings = parent.children();
+					var index = allSiblings.index(realNode) + 1;
+					if (index > 1) {
+						name += ":nth-child(" + index + ")";
 					}
-					name = name.toLowerCase();
-
-					var parent = node.parent();
-
-					var sameTagSiblings = parent.children(name);
-					if (sameTagSiblings.length > 1) { 
-						var allSiblings = parent.children();
-						var index = allSiblings.index(realNode) + 1;
-						if (index > 1) {
-							name += ":nth-child(" + index + ")";
-						}
-					}
-
-					path = name + (path ? ">" + path : "");
-					node = parent;
 				}
 
-				return path;
+				path = name + (path ? ">" + path : "");
+				node = parent;
 			}
-		});
+
+			return path;
+		}
 	}
 
 	if(typeof jQuery=='undefined') {

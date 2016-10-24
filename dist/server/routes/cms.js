@@ -5,7 +5,7 @@ var router = express.Router();
 var url = require("url");
 var path = require("path");
 var uuid = require("node-uuid");
-var exporter = require("./site_exporter");
+var exporter = require("../managers/site_exporter");
 var multer = require("multer");
 var unzip = require("unzip");
 var uploadImage = multer({ dest: __dirname + "/../uploads-image/" });
@@ -14,7 +14,8 @@ var passport = require("passport");
 
 var options,
 	dataManager,
-	userManager;
+	userManager,
+	exportManager;
 
 var isAuthenticated = function(req, res, next){	
 	if (req.isAuthenticated())
@@ -22,50 +23,6 @@ var isAuthenticated = function(req, res, next){
 	
 	res.redirect(401, "/cms/login");
 }
-
-/* Get login page. */
-router.get("/login", function(req, res, next) {
-	userManager.hasAny(function(err, hasAny){
-		if(!hasAny || err){			
-			return res.render("register.html");			
-		}
-		
-		if(req.isAuthenticated()){
-			return res.redirect("/");
-		}
-		res.render("login.html");
-	});	
-});
-
-/* Post login page. */
-router.post("/login", passport.authenticate("local"), function(req, res, next) {
-	res.redirect("/");
-});
-
-/* Post register page. */
-router.post("/register", function(req, res, next) {
-	userManager.hasAny(function(hasAny){
-		if(hasAny){
-			res.redirect(401, "/cms/login");
-		}
-	
-		userManager.register({ username : req.body.username, password: req.body.password }, function(account, err) {
-			if (err) {
-				return res.render("register.html", {info: "Sorry. That username already exists. Try again."});
-			}
-			
-			passport.authenticate("local")(req, res, function () {
-				res.redirect("/");
-			});
-		});
-	});
-});
-
-/* Get logout page. */
-router.get("/logout", isAuthenticated, function(req, res, next) {
-	req.logout();
-	res.redirect("/");
-});
 
 /* GET user infos. */
 router.get("/user", function(req, res, next) {	
@@ -102,7 +59,8 @@ router.get("/metadata", isAuthenticated, function(req, res, next) {
 /* POST page metadata infos. */
 router.post("/metadata", isAuthenticated, function(req, res, next) {	
 	var metadata = {
-		url: req.body.url
+		url: req.body.url,
+		title: req.body.title
 	}
 	
 	dataManager.saveMetadata(metadata, req.query.page, function(err){
@@ -121,7 +79,9 @@ router.post("/edit-page", isAuthenticated, function(req, res, next) {
 		if(err) {
 			throw err;
 		}
-		res.status(200).json({status: "OK"});
+		exportManager.exportSite(path.join(__dirname, "../public"), function(folder){			
+			res.status(200).json({status: "OK"});
+		});
 	});
 });
 
@@ -142,9 +102,9 @@ router.post("/upload-site", uploadSite.single("cms_site_upload"), function(req, 
 		
 		fs.createReadStream(file).pipe(unzip.Extract({ 
 			path: options.sitePath 
-		})).on('close', function(){		
-			res.json({
-				status: "OK"
+		})).on('close', function(){
+			exportManager.exportSite(path.join(__dirname, "../public"), function(folder){			
+				res.status(200).json({status: "OK"});
 			});
 		});
 	})
@@ -153,23 +113,25 @@ router.post("/upload-site", uploadSite.single("cms_site_upload"), function(req, 
 
 /* GET upload image. */
 router.get("/export", isAuthenticated, function(req, res, next) {
-	exporter(options).exportSite(function(exportFile){
-		var stat = fs.statSync(exportFile);
+	exportManager.exportSite(uuid.v4(), function(folder){
+		exportManager.generateZip(folder, function(exportFile){
+			var stat = fs.statSync(exportFile);
 
-		res.writeHead(200, {
-			"Content-Type": "application/zip",
-			"Content-Length": stat.size
-		});
+			res.writeHead(200, {
+				"Content-Type": "application/zip",
+				"Content-Length": stat.size
+			});
 
-		var readStream = fs.createReadStream(exportFile);
-		readStream.pipe(res);
-		
-		//once the file is sent, send 200 and delete the file from the server
-		readStream.on("end", function ()
-		{
-			fs.remove(exportFile);
-			return res.status(200);
-		});
+			var readStream = fs.createReadStream(exportFile);
+			readStream.pipe(res);
+			
+			//once the file is sent, send 200 and delete the file from the server
+			readStream.on("end", function ()
+			{
+				fs.remove(exportFile);
+				return res.status(200);
+			});
+		})
 	});
 });
 
@@ -222,8 +184,9 @@ router.delete("/editable/:id", isAuthenticated, function(req, res, next) {
 module.exports = function(opt){
 	options = opt;
 	
-	dataManager = require("./data_manager")(options.dataDb);
-	userManager = require("./user_manager")(options.userDb);
+	dataManager = require("../managers/data_manager")(options.dataDb);
+	userManager = require("../managers/user_manager")(options.userDb);
+	exportManager = exporter(options);
 
 	return router;
 };
