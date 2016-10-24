@@ -39,6 +39,7 @@
     "passport-local": "^1.0.0",
     "run-sequence": "^1.2.2",
     "tinymce": "^4.4.3",
+    "underscore": "^1.8.3",
     "unzip": "^0.1.11"
   },
   "description": "A stupidly simple CMS for static websites",
