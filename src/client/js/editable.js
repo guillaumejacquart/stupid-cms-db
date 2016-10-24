@@ -446,6 +446,7 @@
 							$.get("/cms/metadata?page=" + page, function(response) {
 								if(response){
 									$("#cms-page-url").val(response.url);
+									$("#cms-page-title").val(response.title);
 									$(".cms-edit-metadata").click(function(){
 										$(".cms-admin-metadata").toggleClass('extended');
 									});

@@ -103,7 +103,8 @@ router.get("/metadata", isAuthenticated, function(req, res, next) {
 /* POST page metadata infos. */
 router.post("/metadata", isAuthenticated, function(req, res, next) {	
 	var metadata = {
-		url: req.body.url
+		url: req.body.url,
+		title: req.body.title
 	}
 	
 	dataManager.saveMetadata(metadata, req.query.page, function(err){
