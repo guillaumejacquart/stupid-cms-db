@@ -69,9 +69,11 @@
 						
 						handle.data("path", path);
 						cms.append(handle);
-					}, function(e){	
+					});
+
+					$('body').on('mouseleave', '.cms-creatable', function(e){	
 						var elem = $(this);	
-						var path = elem.getPath();
+						var path = getPath(elem);
 						if(!$(e.relatedTarget).hasClass("cms-create")){
 							$(".cms-new-content").filter(function(){
 								return $(this).data("path") === path;
