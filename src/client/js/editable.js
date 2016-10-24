@@ -39,12 +39,8 @@
 				}
 				
 				function initCreateEditable(){
-					$(window).click(function(e){	
-						$(".cms-new-content").remove();						
-						elems.removeClass('cms-creatable');
-					});
 					var elems = $("div, ul, ol, h1, h2, h3, h4, h5, p");
-					
+
 					elems.unbind('click')
 					.removeClass('cms-creatable')
 					.filter(function(){
@@ -52,8 +48,9 @@
 							&& !$(this).find("[data-content]").length
 							&& !$(this).closest(".stupid-cms").length;
 					})
-					.click(function(e){
+					.on('contextmenu', function(e) {
 						e.stopPropagation();
+						e.preventDefault();
 						var elem = $(this);
 						var path = getPath(elem);
 						
@@ -75,6 +72,11 @@
 						
 						handle.data("path", path);
 						cms.append(handle);
+					});
+					
+					$(window).on('click', function(e){
+						elems.removeClass('cms-creatable');
+						$('.cms-new-content').remove();
 					});
 					
 					cms.on("click", ".cms-create", function(){
