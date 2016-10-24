@@ -476,31 +476,25 @@
 				}
 			});
 		});
+		
 
-		function getPath(node) {
-			var path;
+		function getPath(elem) {
+			if (elem.length != 1) throw 'Requires one element.';
+			var path, node = elem;
+			if (node[0].id) return "#" + node[0].id;
 			while (node.length) {
-				var realNode = node[0], name = realNode.localName;
-				if (!name) {
-					break;
-				}
+				var realNode = node[0],
+					name = realNode.localName;
+				if (!name) break;
 				name = name.toLowerCase();
-
 				var parent = node.parent();
-
-				var sameTagSiblings = parent.children(name);
-				if (sameTagSiblings.length > 1) { 
-					var allSiblings = parent.children();
-					var index = allSiblings.index(realNode) + 1;
-					if (index > 1) {
-						name += ":nth-child(" + index + ")";
-					}
+				var siblings = parent.children(name);
+				if (siblings.length > 1) {
+					name += ':nth-of-type(' + (siblings.index(realNode) + 1) + ')';
 				}
-
-				path = name + (path ? ">" + path : "");
+				path = name + (path ? '>' + path : '');
 				node = parent;
 			}
-
 			return path;
 		}
 	}

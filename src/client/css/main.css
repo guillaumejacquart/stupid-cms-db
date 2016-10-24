@@ -19,11 +19,13 @@
 	right: 0;
 	padding: 5px;
 	opacity: 0;
+	display:none;
 	transition: 1s ease opacity;
 }
 
 .cms-admin-content.extended{
 	opacity: 1;
+	display:block;
 	transition: 1s ease opacity;
 }
 
