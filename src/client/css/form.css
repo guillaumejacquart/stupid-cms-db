@@ -3,9 +3,8 @@ body{
 }
 
 .cms-user-form{
-	margin: 50vh auto 0; /* poussé de la moitié de hauteur de viewport */
-	transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */	
-	width: 500px;
+	margin: 25vh auto 0;
+	max-width: 500px;
 	padding: 10px;
 	background-color: white;
 	box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
