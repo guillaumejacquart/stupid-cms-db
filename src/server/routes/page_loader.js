@@ -19,6 +19,7 @@ module.exports = function(options) {
 			var doc = docs[0];
 			if(doc && doc.metadata){
 				page = doc.page;
+				var title = doc.metadata.title;
 			}
 			
 			console.log("corresponding page : " + page);
@@ -30,7 +31,7 @@ module.exports = function(options) {
 					return;
 				}
 				
-				$ = cheerio.load(data);					
+				$ = cheerio.load(data);
 				
 				if(doc && doc.contents instanceof Array){
 					doc.contents.forEach(function(d){
@@ -66,6 +67,10 @@ module.exports = function(options) {
 							}
 						}
 					});
+				}
+
+				if(title){
+					$('title').html(title);
 				}
 				
 				// Add minimal css and js to html.
