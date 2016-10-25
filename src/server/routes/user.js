@@ -5,7 +5,6 @@ var router = express.Router();
 var url = require("url");
 var path = require("path");
 var uuid = require("node-uuid");
-var exporter = require("../managers/site_exporter");
 var multer = require("multer");
 var unzip = require("unzip");
 var uploadImage = multer({ dest: __dirname + "/../uploads-image/" });
@@ -14,8 +13,7 @@ var passport = require("passport");
 
 var options,
 	dataManager,
-	userManager,
-	exportManager;
+	userManager;
 
 var isAuthenticated = function(req, res, next){	
 	if (req.isAuthenticated())
@@ -73,7 +71,6 @@ module.exports = function(opt){
 	
 	dataManager = require("../managers/data_manager")(options.dataDb);
 	userManager = require("../managers/user_manager")(options.userDb);
-	exportManager = exporter(options);
 
 	return router;
 };
