@@ -43,7 +43,10 @@
   },
   "description": "A stupidly simple CMS for static websites",
   "main": "./dist/server/cms.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "supertest": "^2.0.1",
+    "tape": "^4.6.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/guillaumejacquart/stupid-cms-db.git"
