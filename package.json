@@ -1,6 +1,6 @@
 {
   "name": "stupid-cms-db",
-  "version": "0.2.2",
+  "version": "0.2.6",
   "private": false,
   "scripts": {
     "start": "node ./sample/bin/www",
@@ -40,6 +40,7 @@
     "passport-local": "^1.0.0",
     "run-sequence": "^1.2.2",
     "tinymce": "^4.4.3",
+    "underscore": "^1.8.3",
     "unzip": "^0.1.11"
   },
   "description": "A stupidly simple CMS for static websites",
