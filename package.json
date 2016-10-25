@@ -4,7 +4,7 @@
   "private": false,
   "scripts": {
     "start": "node ./sample/bin/www",
-	"test": "node test/run.js",
+    "test": "node test/run.js | tap-spec",
     "prepublish": "gulp dist"
   },
   "dependencies": {
@@ -47,6 +47,7 @@
   "main": "./dist/server/cms.js",
   "devDependencies": {
     "supertest": "^2.0.1",
+    "tap-spec": "^4.1.1",
     "tape": "^4.6.2"
   },
   "repository": {
