@@ -15,6 +15,7 @@ module.exports = function(options, app) {
 	
 	app.use("/cms", express.static(path.join(__dirname, "../client")));
 	app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+	app.use("/uploads-image", express.static(path.join(__dirname, "uploads-image")));
 
 	// Register ".mustache" extension with The Mustache Express
 	app.engine("html", mustacheExpress());

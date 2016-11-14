@@ -39,7 +39,7 @@
 				}
 				
 				function initCreateEditable(){
-					var elems = $("div, ul, ol, h1, h2, h3, h4, h5, p");
+					var elems = $("div, span, ul, ol, h1, h2, h3, h4, h5, p");
 
 					elems.unbind('click')
 					.removeClass('cms-creatable')
