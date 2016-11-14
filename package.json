@@ -1,10 +1,12 @@
 {
   "name": "stupid-cms-db",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "private": false,
   "scripts": {
     "start": "node ./sample/bin/www",
-    "prepublish": "gulp dist"
+    "test": "node test/run.js | tap-spec",
+    "prepublish": "gulp dist",
+    "install": "gulp dist"
   },
   "dependencies": {
     "async": "^2.0.1",
@@ -44,7 +46,11 @@
   },
   "description": "A stupidly simple CMS for static websites",
   "main": "./dist/server/cms.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "supertest": "^2.0.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/guillaumejacquart/stupid-cms-db.git"

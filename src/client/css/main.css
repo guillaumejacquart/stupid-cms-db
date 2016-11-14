@@ -17,7 +17,7 @@
 .cms-admin-content{
 	position:relative;
 	right: 0;
-	padding: 5px;
+	padding: 0px;
 	opacity: 0;
 	display:none;
 	transition: 1s ease opacity;
@@ -179,4 +179,8 @@
 
 .cms-creatable{
 	border: 1px dashed #ccc;
+}
+
+.cms-admin-import .fa-spinner{
+	display:none;
 }
