@@ -39,12 +39,12 @@ var fontsDependencies = [
 
 var cssNPMDependencies = [
     'font-awesome/css/font-awesome.min.css',
-    'codemirror/lib/codemirror.css'
+    'codemirror/codemirror.css'
 ];
 
 var jsDependencies = [
-	'jquery/dist/jquery.min.js',
-    'codemirror/lib/codemirror.js',
+	'jquery-3.1.1.min.js',
+    'codemirror/codemirror.js',
     'codemirror/mode/xml/xml.js',
     'codemirror/mode/htmlmixed/htmlmixed.js'
 ];
@@ -54,24 +54,24 @@ var tinyMceDependencies = [
 ];
 
 gulp.task('build:index', function(){
-    var mappedCssPaths = cssNPMDependencies.map(file => {return path.resolve('node_modules', file)});
-    var mappedFontsPaths = fontsDependencies.map(file => {return path.resolve('node_modules', file)});
-    var mappedJsPaths = jsDependencies.map(file => {return path.resolve('node_modules', file)});
-    var mappedTinymcePaths = tinyMceDependencies.map(file => {return path.resolve('node_modules', file)});
-    
+    var mappedCssPaths = cssNPMDependencies.map(file => {return path.resolve('lib', file)});
+    var mappedFontsPaths = fontsDependencies.map(file => {return path.resolve('lib', file)});
+    var mappedJsPaths = jsDependencies.map(file => {return path.resolve('lib', file)});
+    var mappedTinymcePaths = tinyMceDependencies.map(file => {return path.resolve('lib', file)});
+	
     //Let's copy our head dependencies into a dist/libs
-    var copyCssNPMDependencies = gulp.src(mappedCssPaths, {base:'node_modules'})
+    var copyCssNPMDependencies = gulp.src(mappedCssPaths, {base:'lib'})
         .pipe(concatCss("dependencies.css"))    
         .pipe(gulp.dest('dist/client/css'));
     
-    var copyFontsNPMDependencies = gulp.src(mappedFontsPaths, {base:'node_modules'})
+    var copyFontsNPMDependencies = gulp.src(mappedFontsPaths, {base:'lib'})
         .pipe(gulp.dest('dist/client/css'));
     
-    var copyJsNPMDependencies = gulp.src(mappedJsPaths, {base:'node_modules'})
+    var copyJsNPMDependencies = gulp.src(mappedJsPaths, {base:'lib'})
         .pipe(concat("dependencies.js"))    
         .pipe(gulp.dest('dist/client/js'));
 
-    var tinymceNPMDependencies = gulp.src(mappedTinymcePaths, {base:'node_modules'})
+    var tinymceNPMDependencies = gulp.src(mappedTinymcePaths, {base:'lib'})
         .pipe(gulp.dest('dist/client/js'));
 
     return [
