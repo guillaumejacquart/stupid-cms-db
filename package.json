@@ -1,6 +1,6 @@
 {
   "name": "stupid-cms-db",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": false,
   "scripts": {
     "start": "node ./sample/bin/www",
