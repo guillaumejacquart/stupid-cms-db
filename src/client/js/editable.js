@@ -168,9 +168,9 @@
 					tinymce.init({
 						selector: "[data-content]",
 						inline: true,
-						toolbar: "undo redo image link paste | bold italic underline | remove-editor",
+						toolbar: "undo redo image link paste | bold italic underline | bullist numlist | remove-editor",
 						menubar: false,
-						plugins: "image link paste",
+						plugins: "image link paste lists",
 						paste_as_text: true,
 						forced_root_block : "",
 						visualblocks_default_state: true,
