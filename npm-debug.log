@@ -1,0 +1,153 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'publish' ]
+2 info using npm@3.10.10
+3 info using node@v6.10.0
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/home/guillaume/Downloads/stupid-cms-db',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /home/guillaume/.npm/stupid-cms-db/0.4.0/package.tgz not in flight; packing
+9 verbose correctMkdir /home/guillaume/.npm correctMkdir not in flight; initializing
+10 info lifecycle stupid-cms-db@0.4.0~prepublish: stupid-cms-db@0.4.0
+11 verbose lifecycle stupid-cms-db@0.4.0~prepublish: unsafe-perm in lifecycle true
+12 verbose lifecycle stupid-cms-db@0.4.0~prepublish: PATH: /usr/lib/node_modules/npm/bin/node-gyp-bin:/home/guillaume/Downloads/stupid-cms-db/node_modules/.bin:/home/guillaume/bin:/home/guillaume/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+13 verbose lifecycle stupid-cms-db@0.4.0~prepublish: CWD: /home/guillaume/Downloads/stupid-cms-db
+14 silly lifecycle stupid-cms-db@0.4.0~prepublish: Args: [ '-c', 'gulp dist' ]
+15 silly lifecycle stupid-cms-db@0.4.0~prepublish: Returned: code: 0  signal: null
+16 verbose tar pack [ '/home/guillaume/.npm/stupid-cms-db/0.4.0/package.tgz',
+16 verbose tar pack   '/home/guillaume/Downloads/stupid-cms-db' ]
+17 verbose tarball /home/guillaume/.npm/stupid-cms-db/0.4.0/package.tgz
+18 verbose folder /home/guillaume/Downloads/stupid-cms-db
+19 verbose addLocalTarball adding from inside cache /home/guillaume/.npm/stupid-cms-db/0.4.0/package.tgz
+20 verbose correctMkdir /home/guillaume/.npm correctMkdir not in flight; initializing
+21 silly cache afterAdd stupid-cms-db@0.4.0
+22 verbose afterAdd /home/guillaume/.npm/stupid-cms-db/0.4.0/package/package.json not in flight; writing
+23 verbose correctMkdir /home/guillaume/.npm correctMkdir not in flight; initializing
+24 verbose afterAdd /home/guillaume/.npm/stupid-cms-db/0.4.0/package/package.json written
+25 silly publish { name: 'stupid-cms-db',
+25 silly publish   version: '0.4.0',
+25 silly publish   private: false,
+25 silly publish   scripts:
+25 silly publish    { start: 'node ./sample/bin/www',
+25 silly publish      test: 'node test/run.js | tap-spec',
+25 silly publish      prepublish: 'gulp dist' },
+25 silly publish   dependencies:
+25 silly publish    { async: '^2.0.1',
+25 silly publish      'bcrypt-nodejs': '0.0.3',
+25 silly publish      'body-parser': '^1.15.2',
+25 silly publish      cheerio: '^0.20.0',
+25 silly publish      commander: '^2.9.0',
+25 silly publish      'cookie-parser': '^1.4.3',
+25 silly publish      'copy-dir': '^0.3.0',
+25 silly publish      debug: '~2.2.0',
+25 silly publish      del: '^2.2.2',
+25 silly publish      'easy-zip': '0.0.4',
+25 silly publish      express: '~4.13.1',
+25 silly publish      'express-session': '^1.14.1',
+25 silly publish      'fs-extra': '^0.30.0',
+25 silly publish      morgan: '^1.6.1',
+25 silly publish      multer: '^1.2.0',
+25 silly publish      'mustache-express': '^1.2.2',
+25 silly publish      nedb: '^1.8.0',
+25 silly publish      nodemon: '^1.10.2',
+25 silly publish      passport: '^0.3.2',
+25 silly publish      'passport-local': '^1.0.0',
+25 silly publish      'run-sequence': '^1.2.2',
+25 silly publish      underscore: '^1.8.3',
+25 silly publish      unzip: '^0.1.11',
+25 silly publish      uuid: '^3.0.1' },
+25 silly publish   description: 'A stupidly simple CMS for static websites',
+25 silly publish   main: './dist/server/cms.js',
+25 silly publish   devDependencies:
+25 silly publish    { gulp: '^3.9.1',
+25 silly publish      'gulp-concat': '^2.6.0',
+25 silly publish      'gulp-concat-css': '^2.3.0',
+25 silly publish      'gulp-notify': '^2.2.0',
+25 silly publish      supertest: '^2.0.1',
+25 silly publish      'tap-spec': '^4.1.1',
+25 silly publish      tape: '^4.6.2' },
+25 silly publish   repository:
+25 silly publish    { type: 'git',
+25 silly publish      url: 'git+https://github.com/guillaumejacquart/stupid-cms-db.git' },
+25 silly publish   engines: { node: '4.x' },
+25 silly publish   keywords: [ 'static', 'cms', 'editor', 'wysiwyg' ],
+25 silly publish   author:
+25 silly publish    { name: 'Guillaume Jacquart',
+25 silly publish      email: 'guillaume.jacquart@live.fr' },
+25 silly publish   license: 'ISC',
+25 silly publish   bugs: { url: 'https://github.com/guillaumejacquart/stupid-cms-db/issues' },
+25 silly publish   bin: { 'stupid-cms': 'bin/stupid-cms.js' },
+25 silly publish   preferGlobal: true,
+25 silly publish   homepage: 'https://github.com/guillaumejacquart/stupid-cms-db#readme',
+25 silly publish   readme: '# Stupid CMS\nA stupidly simple CMS to make static sites editable without compromising your original static files.\n\n\n![Codeship](https://codeship.com/projects/77c806e0-42bd-0134-297e-6295fca7620e/status?branch=master "Codeship")\n[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b5a95265fda942e6be4e5ec1ea94a044)](https://www.codacy.com/app/guillaume-jacquart/stupid-cms-db?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=guillaumejacquart/stupid-cms-db&amp;utm_campaign=Badge_Grade)\n\n[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)\n\n\n\n## Demo\nLive demo : [Stupid-CMS demo](https://test-stupid-cms.herokuapp.com/)\nTo edit the content, go to : [https://test-stupid-cms.herokuapp.com/cms/login](https://test-stupid-cms.herokuapp.com/cms/login) and use the credentials :\n* login : test\n* password : test\n\n## Getting Started\nThere is two ways you can get started with Stupid-CMS : from the CLI or using the express middleware\n\n### Using the cli to serve your site as editable\n\n 1. Install stupid-cms globally.\n \n```\nnpm install -g stupid-cms\n```\n\n 2. Go to your static site folder and serve using stupid-cms :\n \n```\nstupid-cms -s --port 3000 [--dir SITEPATH (default to current dir)]\n```\n\n 3. Go to \'http://localhost:3000/cms/login\' and enter your credentials to edit the site.\n\n### Using the middleware\nYou can add a editable static site to any of your expressjs application using this middleware. Just add one configuration and pass your express app object to the cms :\n ```\nvar app = express();\nvar cms = require("stupid-cms");\n...\n// This is the path to your website static files\nvar sitePath = path.join(__dirname, \'sit\n\tsitePath: sitePath,\n\tindex: \'index.html\'\n}, app);\n```\n\nThen repeat steps 3\n',
+25 silly publish   readmeFilename: 'README.md',
+25 silly publish   gitHead: '6351c27fee9340e5eb9b45798c3a92f3a8744b2d',
+25 silly publish   _id: 'stupid-cms-db@0.4.0',
+25 silly publish   _shasum: 'a39affa9b9a3428d5499c6778cad725801c52047',
+25 silly publish   _from: '.' }
+26 verbose getPublishConfig undefined
+27 silly mapToRegistry name stupid-cms-db
+28 silly mapToRegistry using default registry
+29 silly mapToRegistry registry https://registry.npmjs.org/
+30 silly mapToRegistry data Result {
+30 silly mapToRegistry   raw: 'stupid-cms-db',
+30 silly mapToRegistry   scope: null,
+30 silly mapToRegistry   escapedName: 'stupid-cms-db',
+30 silly mapToRegistry   name: 'stupid-cms-db',
+30 silly mapToRegistry   rawSpec: '',
+30 silly mapToRegistry   spec: 'latest',
+30 silly mapToRegistry   type: 'tag' }
+31 silly mapToRegistry uri https://registry.npmjs.org/stupid-cms-db
+32 verbose publish registryBase https://registry.npmjs.org/
+33 silly publish uploading /home/guillaume/.npm/stupid-cms-db/0.4.0/package.tgz
+34 verbose request uri https://registry.npmjs.org/stupid-cms-db
+35 verbose request sending authorization for write operation
+36 info attempt registry request try #1 at 7:16:38 PM
+37 verbose request using bearer token for auth
+38 verbose request id 8e16d4d90e89a4ad
+39 http request PUT https://registry.npmjs.org/stupid-cms-db
+40 http 403 https://registry.npmjs.org/stupid-cms-db
+41 verbose headers { 'content-type': 'application/json',
+41 verbose headers   'cache-control': 'max-age=300',
+41 verbose headers   'content-length': '95',
+41 verbose headers   'accept-ranges': 'bytes',
+41 verbose headers   date: 'Sat, 04 Mar 2017 18:16:53 GMT',
+41 verbose headers   via: '1.1 varnish',
+41 verbose headers   connection: 'keep-alive',
+41 verbose headers   'x-served-by': 'cache-ams4432-AMS',
+41 verbose headers   'x-cache': 'MISS',
+41 verbose headers   'x-cache-hits': '0',
+41 verbose headers   'x-timer': 'S1488651399.470751,VS0,VE13854',
+41 verbose headers   vary: 'Accept-Encoding' }
+42 verbose request invalidating /home/guillaume/.npm/registry.npmjs.org/stupid-cms-db on PUT
+43 error publish Failed PUT 403
+44 verbose stack Error: "You cannot publish over the previously published version 0.4.0." : stupid-cms-db
+44 verbose stack     at makeError (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+44 verbose stack     at CachingRegistryClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:290:14)
+44 verbose stack     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+44 verbose stack     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:187:22)
+44 verbose stack     at emitTwo (events.js:106:13)
+44 verbose stack     at Request.emit (events.js:191:7)
+44 verbose stack     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1048:10)
+44 verbose stack     at emitOne (events.js:96:13)
+44 verbose stack     at Request.emit (events.js:188:7)
+44 verbose stack     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:969:12)
+45 verbose statusCode 403
+46 verbose pkgid stupid-cms-db
+47 verbose cwd /home/guillaume/Downloads/stupid-cms-db
+48 error Linux 4.4.0-63-generic
+49 error argv "/usr/bin/nodejs" "/usr/bin/npm" "publish"
+50 error node v6.10.0
+51 error npm  v3.10.10
+52 error code E403
+53 error "You cannot publish over the previously published version 0.4.0." : stupid-cms-db
+54 error If you need help, you may report this error at:
+54 error     <https://github.com/npm/npm/issues>
+55 verbose exit [ 1, true ]

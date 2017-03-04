@@ -29,7 +29,7 @@ npm install -g stupid-cms
  2. Go to your static site folder and serve using stupid-cms :
  
 ```
-stupid-cms -s --port 3000 [--dir SITEPATH (default to current dir)]
+stupid-cms -n <your_app_name> -s --port 3000 [--dir SITEPATH (default to current dir)]
 ```
 
  3. Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
@@ -43,6 +43,7 @@ var cms = require("stupid-cms");
 // This is the path to your website static files
 var sitePath = path.join(__dirname, 'sit
 	sitePath: sitePath,
+	siteName: 'test_app',
 	index: 'index.html'
 }, app);
 ```
