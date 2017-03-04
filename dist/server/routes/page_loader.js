@@ -77,7 +77,7 @@ module.exports = function(options) {
 				$("body").append("<script src=\"/cms/js/app.js\"></script>");
 				$("body").append("<script src=\"/cms/js/dependencies.js\"></script>");
 				$("body").append("<script src=\"/cms/js/tinymce/tinymce.min.js\"></script>");
-				$("body").append("<input id=\"cms-page-name\" type=\"hidden\" value=\"" + url + "\"/>");
+				$("body").append("<input id=\"cms-page-name\" type=\"hidden\" value=\"" + page + "\"/>");
 
 				$("head").append("<link href=\"/cms/css/dependencies.css\" rel=\"stylesheet\">");
 				$("head").append("<link href=\"/cms/css/app.css\" rel=\"stylesheet\">");

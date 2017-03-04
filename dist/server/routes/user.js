@@ -7,8 +7,6 @@ var path = require("path");
 var uuid = require("uuid");
 var multer = require("multer");
 var unzip = require("unzip");
-var uploadImage = multer({ dest: __dirname + "/../uploads-image/" });
-var uploadSite = multer({ dest: __dirname + "/../uploads-site/" });
 var passport = require("passport");
 
 var options,

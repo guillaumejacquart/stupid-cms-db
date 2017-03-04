@@ -52,7 +52,9 @@ module.exports = function(options) {
     var index = options.index || "index.html";
     var portArg = options.port || 3000;
     var sitePath = path.join(process.cwd(), pathDir);
-    var dbPath = options.dbPath;
+    var siteName = options.siteName;
+    var dbPath = options.dbPath || sitePath;
+
     port = portArg;
 
     console.log("loading static site in : " + sitePath);
@@ -68,7 +70,8 @@ module.exports = function(options) {
     cms({
         sitePath,
         index,
-        dbPath
+        dbPath,
+        siteName
     }, app);
 
     // catch 404 and forward to error handler

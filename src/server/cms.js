@@ -8,14 +8,29 @@ var passport = require("passport");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var uuid = require('uuid');
 var passport = require("passport")
   , LocalStrategy = require("passport-local").Strategy;
 
 module.exports = function(options, app) {
+
+	options.sitePath = options.sitePath || '.';
+	options.dbPath = options.sitePath || '.';
+	options.siteName = options.siteName || uuid.v1();
+
+	var appEnvPath = path.join(process.env.HOME, ".stupid-cms");
+	var siteEnvPath = path.join(appEnvPath, options.siteName);
+
+	// Create environment directories
+	fs.ensureDirSync(appEnvPath);
+	fs.ensureDirSync(siteEnvPath);
 	
-	app.use("/cms", express.static(path.join(__dirname, "../client")));
-	app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-	app.use("/uploads-image", express.static(path.join(__dirname, "uploads-image")));
+	options.dataDb = new Datastore({ filename: path.join(siteEnvPath, "pages.data"), autoload: true });
+	options.userDb = new Datastore({ filename: path.join(siteEnvPath, "users.data"), autoload: true });	
+
+	options.uploadImageDir = path.join(siteEnvPath, "uploads-image");
+	options.uploadSiteDir = path.join(siteEnvPath, "uploads-site");
+	options.publicDir = path.join(siteEnvPath, "public");
 
 	// Register ".mustache" extension with The Mustache Express
 	app.engine("html", mustacheExpress());
@@ -23,7 +38,7 @@ module.exports = function(options, app) {
 	app.use(bodyParser.urlencoded({ extended: false }))
 	app.use(bodyParser.json());
 	app.use(session({ 
-		secret: 'LxfMZq15',
+		secret: uuid.v1(),
 		resave: false,
 		saveUninitialized: true,
 	}));
@@ -31,9 +46,6 @@ module.exports = function(options, app) {
 	app.set("view engine", "mustache");
 	app.set("view cache", false);
 	app.set("views", path.join(__dirname, "views"));
-	
-	options.dataDb = new Datastore({ filename: path.join(options.dbPath || options.sitePath, "pages.data"), autoload: true });
-	options.userDb = new Datastore({ filename: path.join(options.dbPath || options.sitePath, "users.data"), autoload: true });
 	
 	passport.serializeUser(function(user, done) {
 		done(null, user._id);
@@ -70,16 +82,20 @@ module.exports = function(options, app) {
 	var pageLoader = require("./routes/page_loader")(options);
 	app.use(pageLoader);
 	
-	var publicDir = path.join(__dirname, "public");
-	fs.stat(publicDir, function (err, stats){
+	fs.stat(options.publicDir, function (err, stats){
 		if (err) {
-			fs.copy(options.sitePath, publicDir, function (err) {
+			fs.copy(options.sitePath, options.publicDir, function (err) {
 				if (err) return console.error(err);
 			});
 		}
 	});
 	
-	app.use("/", express.static(publicDir));
+	app.use("/", express.static(options.publicDir));
+	
+	app.use("/uploads-site", express.static(options.uploadSiteDir));
+	app.use("/uploads-image", express.static(options.uploadImageDir));
+
+	app.use("/cms", express.static(path.join(__dirname, "../client")));
 	
 	var userRoute = require("./routes/user")(options);
 	app.use("/cms", userRoute);

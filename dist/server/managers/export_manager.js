@@ -11,10 +11,10 @@ var dataDb,
 	sitePath,
 	exports = path.join(__dirname, "../exports");
 
-function exportSite(exportFolder, exportCallback) {			
+function exportSite(exportFolder, exportCallback) {
 	copydir(sitePath, exportFolder, function(err) {
+		console.log('copied files');	
 		fs.readdir(exportFolder, function(err, files){
-			console.log(files);			
 			var list = files.filter(function(l){
 				return l.endsWith('.html');
 			});
@@ -25,6 +25,7 @@ function exportSite(exportFolder, exportCallback) {
 					var page = doc.page;
 					
 					var filepath = path.join(exportFolder, page);
+					console.log(filepath);
 					fs.readFile(filepath, "utf8", function(err, data){					
 						$ = cheerio.load(data);					
 						

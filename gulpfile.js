@@ -19,9 +19,6 @@ gulp.task('build:server', function () {
     var views = gulp.src('src/server/views/*')
 		.pipe(gulp.dest('dist/server/views'))
 
-    var views = gulp.src('src/server/uploads/*')
-		.pipe(gulp.dest('dist/server/uploads'))
-
     var views = gulp.src('src/server/exports/*')
 		.pipe(gulp.dest('dist/server/exports'))
 });

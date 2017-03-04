@@ -8,7 +8,8 @@ var sitePath = path.join(__dirname, "site");
 cms({
 	sitePath,
 	index: "index.html",
-	dbPath: __dirname
+	dbPath: __dirname,
+	siteName: 'sample'
 }, app);
 
 module.exports = app;
