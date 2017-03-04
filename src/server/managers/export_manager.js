@@ -4,7 +4,7 @@ var fs = require("fs-extra");
 var cheerio = require("cheerio");
 var copydir = require('copy-dir');
 var async = require('async');
-var uuid = require("node-uuid");
+var uuid = require("uuid");
 var EasyZip = require('easy-zip').EasyZip;
 
 var dataDb,

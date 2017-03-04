@@ -1,7 +1,5 @@
 var gulp = require('gulp');
 var path = require('path');
-var sourcemaps = require('gulp-sourcemaps');
-var ts = require('gulp-typescript');
 var del = require('del');
 var concat = require('gulp-concat')
 var runSequence = require('run-sequence');

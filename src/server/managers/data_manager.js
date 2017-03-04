@@ -1,6 +1,6 @@
 var fs = require("fs-extra");
 var cheerio = require("cheerio");
-var uuid = require("node-uuid");
+var uuid = require("uuid");
 
 var dataDb;
 
