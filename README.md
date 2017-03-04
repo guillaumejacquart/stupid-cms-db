@@ -19,20 +19,19 @@ To edit the content, go to : [https://test-stupid-cms.herokuapp.com/cms/login](h
 There is two ways you can get started with Stupid-CMS : from the CLI or using the express middleware
 
 ### Using the cli to serve your site as editable
+1) Install stupid-cms globally. 
 
- 1. Install stupid-cms globally.
- 
 ```
 npm install -g stupid-cms
 ```
 
- 2. Go to your static site folder and serve using stupid-cms :
- 
+2) Go to your static site folder and serve using stupid-cms : 
+
 ```
 stupid-cms -n <your_app_name> -s --port 3000 [--dir SITEPATH (default to current dir)]
 ```
 
- 3. Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
+3) Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
 
 ### Using the middleware
 You can add a editable static site to any of your expressjs application using this middleware. Just add one configuration and pass your express app object to the cms :
