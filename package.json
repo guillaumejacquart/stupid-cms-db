@@ -5,8 +5,7 @@
   "scripts": {
     "start": "node ./sample/bin/www",
     "test": "node test/run.js | tap-spec",
-    "prepublish": "gulp dist",
-    "install": "gulp dist"
+    "prepublish": "gulp dist"
   },
   "dependencies": {
     "async": "^2.0.1",
