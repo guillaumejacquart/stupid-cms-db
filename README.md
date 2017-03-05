@@ -22,7 +22,7 @@ There is two ways you can get started with Stupid-CMS : from the CLI or using th
 1) Install stupid-cms globally. 
 
 ```
-npm install -g stupid-cms
+npm install -g stupid-cms-db
 ```
 
 2) Go to your static site folder and serve using stupid-cms : 
