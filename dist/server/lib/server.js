@@ -1,6 +1,5 @@
 var http = require("http");
 var express = require("express");
-var path = require("path");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
 var cms = require("../cms");
@@ -48,18 +47,14 @@ function onListening() {
 }
 
 module.exports = function(options) {
-    var pathDir = options.path;
-    var index = options.index || "index.html";
-    var portArg = options.port || 3000;
-    var sitePath = path.join(process.cwd(), pathDir);
-    var siteName = options.siteName;
-    var dbPath = options.dbPath || sitePath;
+    var sitePath = options.sitePath;
+    var dataPath = options.dataPath;
 
-    port = portArg;
+    port = options.port;
 
     console.log("loading static site in : " + sitePath);
     var app = express();
-    app.set("port", portArg);
+    app.set("port", port);
 
     app.use(logger("dev"));
     app.use(bodyParser.json());
@@ -69,9 +64,7 @@ module.exports = function(options) {
 
     cms({
         sitePath,
-        index,
-        dbPath,
-        siteName
+        dataPath
     }, app);
 
     // catch 404 and forward to error handler

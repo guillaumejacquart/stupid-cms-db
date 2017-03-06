@@ -1,10 +1,8 @@
 var express = require("express");
 var path = require("path");
 var fs = require("fs-extra");
-var cheerio = require("cheerio");
 var mustacheExpress = require("mustache-express");
 var Datastore = require("nedb");
-var passport = require("passport");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -15,22 +13,19 @@ var passport = require("passport")
 module.exports = function(options, app) {
 
 	options.sitePath = options.sitePath || '.';
-	options.dbPath = options.sitePath || '.';
-	options.siteName = options.siteName || uuid.v1();
+	options.index = options.index || "index.html";
 
-	var appEnvPath = path.join(process.env.HOME, ".stupid-cms");
-	var siteEnvPath = path.join(appEnvPath, options.siteName);
+	var appEnvPath = options.dataPath || path.join(options.sitePath, ".stupid-cms");
 
 	// Create environment directories
 	fs.ensureDirSync(appEnvPath);
-	fs.ensureDirSync(siteEnvPath);
 	
-	options.dataDb = new Datastore({ filename: path.join(siteEnvPath, "pages.data"), autoload: true });
-	options.userDb = new Datastore({ filename: path.join(siteEnvPath, "users.data"), autoload: true });	
+	options.dataDb = new Datastore({ filename: path.join(appEnvPath, "pages.data"), autoload: true });
+	options.userDb = new Datastore({ filename: path.join(appEnvPath, "users.data"), autoload: true });	
 
-	options.uploadImageDir = path.join(siteEnvPath, "uploads-image");
-	options.uploadSiteDir = path.join(siteEnvPath, "uploads-site");
-	options.publicDir = path.join(siteEnvPath, "public");
+	options.uploadImageDir = path.join(appEnvPath, "uploads-image");
+	options.uploadSiteDir = path.join(appEnvPath, "uploads-site");
+	options.publicDir = path.join(appEnvPath, "public");
 
 	// Register ".mustache" extension with The Mustache Express
 	app.engine("html", mustacheExpress());

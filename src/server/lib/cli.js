@@ -29,30 +29,23 @@ module.exports = {
 
         program
             .version(pjson.version)
-            .usage("[options]")
-            .option("-s, --serve", "Serve the current dir as static cms")
-            .option("-n --app-name [app]", "The name of the app")
-            .option("-d, --dir [dir]", "Path of the static website [currentDir]", ".")
-            .option("-p, --port [port]", "PORT number [3000]", "3000")
-            .option("--db [dbPath]", "Path for the db content folder")
+            .usage("[options] <web_dir>")
+            .option("-p, --port [port]", "PORT number [3000]")
+            .option("-d, --data [data]", "Path for the data (users, content, uploads) folder")
             .parse(process.argv);
 
-        var sitePath = program.dir || ".";
-        console.log(program.appName);
+        var sitePath = path.join(process.cwd(), program.args[0] || ".");
 
         var options = {
-            port: program.port || 3000,
-            path: sitePath,
-            dbPath: program.db || path.join(sitePath, "stupid-cms", "db"),
-            siteName: program.appName
+            port: program.port || process.env.PORT || 3000,
+            sitePath: sitePath,
+            dataPath: program.data
         };
 
         console.log("Options : " + JSON.stringify(options));
 
-        if (program.serve) {
-            self.serve(options);
-            return;
-        }
+        self.serve(options);
+        return;
     }
 
 };

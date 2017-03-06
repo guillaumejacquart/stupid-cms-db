@@ -28,10 +28,15 @@ npm install -g stupid-cms-db
 2) Go to your static site folder and serve using stupid-cms : 
 
 ```
-stupid-cms -n <your_app_name> -s --port 3000 [--dir SITEPATH (default to current dir)]
+stupid-cms --port 3000 --data <data_path> <site_path> (default to current dir)]
 ```
 
 3) Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
+
+#### Options
+```<site_path>``` : the path where your static site is stored
+```--port``` : Optional. set the port you want to run the website on (default 3000)
+```--data``` : Optional. set the data directory, where the content, users, and uploads will be stored (default to "./<your_website>/.stupid-cms")
 
 ### Using the middleware
 You can add a editable static site to any of your expressjs application using this middleware. Just add one configuration and pass your express app object to the cms :
@@ -41,9 +46,9 @@ var cms = require("stupid-cms");
 ...
 // This is the path to your website static files
 var sitePath = path.join(__dirname, 'sit
-	sitePath: sitePath,
-	siteName: 'test_app',
-	index: 'index.html'
+	sitePath: <your_site_path>,
+	index: 'index.html',
+	dataPath: <your_data_path>
 }, app);
 ```
 

@@ -1,9 +1,9 @@
 {
   "name": "stupid-cms-db",
-  "version": "0.4.1",
+  "version": "0.5.1",
   "private": false,
   "scripts": {
-    "start": "node ./sample/bin/www",
+    "start": "gulp",
     "test": "node test/run.js | tap-spec",
     "prepublish": "gulp dist"
   },

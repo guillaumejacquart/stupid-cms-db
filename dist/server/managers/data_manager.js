@@ -32,6 +32,7 @@ function getPage(page, callback){
 }
 
 function getMetadata(page, callback){
+	console.log(page);
 	dataDb.find({ page: page }, function (err, docs) {	
 		if(!docs.length || !docs[0].metadata){
 			callback({
