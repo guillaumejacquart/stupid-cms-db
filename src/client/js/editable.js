@@ -479,7 +479,7 @@
 		function getPath(elem) {
 			if (elem.length != 1) throw 'Requires one element.';
 			var path, node = elem;
-			if (node[0].id) return "#" + node[0].id;
+			//if (node[0].id) return "#" + node[0].id;
 			while (node.length) {
 				var realNode = node[0],
 					name = realNode.localName;

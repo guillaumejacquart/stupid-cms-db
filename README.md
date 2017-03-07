@@ -28,7 +28,7 @@ npm install -g stupid-cms-db
 2) Go to your static site folder and serve using stupid-cms : 
 
 ```
-stupid-cms --port 3000 --data <data_path> <site_path> (default to current dir)]
+stupid-cms --port <your_port> --data <data_path> <site_path> (default to current dir)]
 ```
 
 3) Go to 'http://localhost:3000/cms/login' and enter your credentials to edit the site.
@@ -53,3 +53,17 @@ var sitePath = path.join(__dirname, 'sit
 ```
 
 Then repeat steps 3
+
+## User manual
+### Make content editable
+Right click on any content on your website, then click on the small pencil shaped button on the top right corner to make it editable.
+
+### Use the editor
+Once the content is editable, you can use the wysiwyg editor to change the content, insert pictures, and more.
+Every changes to make are saved in local storage, and are not lived.
+
+### Publish your changes
+Once you validated the changes on your live site, you can use the toolbar on the right side to publish it. Just click on the floppy disk shape button to set your changes live.
+
+### Make content un-editable
+On the editor, you can click the "remove editor" button to disable content edition for this element.
