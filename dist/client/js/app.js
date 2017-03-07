@@ -12,8 +12,6 @@
 				var cms,
 					notif;
 				
-				$('head').append('<link rel="stylesheet" type="text/css" href="//yui.yahooapis.com/3.18.1/build/cssnormalize-context/cssnormalize-context-min.css">');
-				
 				function displayNotif(content, type){
 					notif.html(content)
 						.addClass(type)

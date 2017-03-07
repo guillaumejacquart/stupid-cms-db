@@ -34,7 +34,8 @@ var fontsDependencies = [
 
 var cssNPMDependencies = [
     'font-awesome/css/font-awesome.min.css',
-    'codemirror/codemirror.css'
+    'codemirror/codemirror.css',
+    'cssnormalize/cssnormalize.css'
 ];
 
 var jsDependencies = [

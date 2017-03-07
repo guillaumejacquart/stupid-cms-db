@@ -83,8 +83,6 @@ module.exports = function(options, app) {
 	
 	fs.stat(options.publicDir, function (err, stats){
 		if (err) {
-			console.log(options.sitePath)
-			console.log(options.publicDir)
 			fs.copy(options.sitePath, options.publicDir, { filter: filterFunc }, function (err) {
 				if (err) return console.error(err);
 			});
