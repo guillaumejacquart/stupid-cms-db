@@ -1,0 +1,116 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/ubuntu/.nvm/versions/node/v4.7.3/bin/node',
+1 verbose cli   '/home/ubuntu/.nvm/versions/node/v4.7.3/bin/npm',
+1 verbose cli   'unpublish',
+1 verbose cli   'stupid-cms',
+1 verbose cli   '--force' ]
+2 info using npm@2.15.11
+3 info using node@v4.7.3
+4 warn using --force I sure hope you know what you are doing.
+5 silly unpublish args[0] stupid-cms
+6 silly unpublish thing Result {
+6 silly unpublish   raw: 'stupid-cms',
+6 silly unpublish   scope: null,
+6 silly unpublish   name: 'stupid-cms',
+6 silly unpublish   rawSpec: '',
+6 silly unpublish   spec: 'latest',
+6 silly unpublish   type: 'tag' }
+7 verbose getPublishConfig null
+8 silly ls normalized stupid-cms
+9 silly gentlyRm /home/ubuntu/.npm/stupid-cms is being purged
+10 verbose gentlyRm don't care about contents; nuking /home/ubuntu/.npm/stupid-cms
+11 silly mapToRegistry name stupid-cms
+12 silly mapToRegistry using default registry
+13 silly mapToRegistry registry https://registry.npmjs.org/
+14 silly mapToRegistry data Result {
+14 silly mapToRegistry   raw: 'stupid-cms',
+14 silly mapToRegistry   scope: null,
+14 silly mapToRegistry   name: 'stupid-cms',
+14 silly mapToRegistry   rawSpec: '',
+14 silly mapToRegistry   spec: 'latest',
+14 silly mapToRegistry   type: 'tag' }
+15 silly mapToRegistry uri https://registry.npmjs.org/stupid-cms
+16 verbose get GET as part of write; not caching result
+17 verbose request uri https://registry.npmjs.org/stupid-cms?write=true
+18 verbose request no auth needed
+19 info attempt registry request try #1 at 10:27:54 AM
+20 verbose request using bearer token for auth
+21 verbose request id 8bc19c49cf5560f4
+22 http request GET https://registry.npmjs.org/stupid-cms?write=true
+23 http 200 https://registry.npmjs.org/stupid-cms?write=true
+24 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+24 verbose headers   'content-type': 'application/json',
+24 verbose headers   etag: '"58bc0324-2bcb"',
+24 verbose headers   'content-encoding': 'gzip',
+24 verbose headers   'cache-control': 'max-age=0',
+24 verbose headers   'transfer-encoding': 'chunked',
+24 verbose headers   'accept-ranges': 'bytes',
+24 verbose headers   date: 'Tue, 07 Mar 2017 10:27:54 GMT',
+24 verbose headers   via: '1.1 varnish',
+24 verbose headers   connection: 'keep-alive',
+24 verbose headers   'x-served-by': 'cache-lcy1125-LCY',
+24 verbose headers   'x-cache': 'MISS',
+24 verbose headers   'x-cache-hits': '0',
+24 verbose headers   'x-timer': 'S1488882474.480565,VS0,VE425',
+24 verbose headers   vary: 'Accept-Encoding' }
+25 silly get cb [ 200,
+25 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+25 silly get     'content-type': 'application/json',
+25 silly get     etag: '"58bc0324-2bcb"',
+25 silly get     'content-encoding': 'gzip',
+25 silly get     'cache-control': 'max-age=0',
+25 silly get     'transfer-encoding': 'chunked',
+25 silly get     'accept-ranges': 'bytes',
+25 silly get     date: 'Tue, 07 Mar 2017 10:27:54 GMT',
+25 silly get     via: '1.1 varnish',
+25 silly get     connection: 'keep-alive',
+25 silly get     'x-served-by': 'cache-lcy1125-LCY',
+25 silly get     'x-cache': 'MISS',
+25 silly get     'x-cache-hits': '0',
+25 silly get     'x-timer': 'S1488882474.480565,VS0,VE425',
+25 silly get     vary: 'Accept-Encoding' } ]
+26 verbose get saving stupid-cms to /home/ubuntu/.npm/registry.npmjs.org/stupid-cms_3Fwrite_3Dtrue/.cache.json
+27 verbose correctMkdir /home/ubuntu/.npm correctMkdir not in flight; initializing
+28 info unpublish No version specified, removing all
+29 verbose request uri https://registry.npmjs.org/stupid-cms/-rev/8-611a5833526901c0eb2c0340d1ccd212
+30 verbose request sending authorization for write operation
+31 info attempt registry request try #1 at 10:27:54 AM
+32 verbose request using bearer token for auth
+33 http request DELETE https://registry.npmjs.org/stupid-cms/-rev/8-611a5833526901c0eb2c0340d1ccd212
+34 http 400 https://registry.npmjs.org/stupid-cms/-rev/8-611a5833526901c0eb2c0340d1ccd212
+35 verbose headers { 'content-type': 'application/json',
+35 verbose headers   'cache-control': 'max-age=300',
+35 verbose headers   'content-length': '17',
+35 verbose headers   'accept-ranges': 'bytes',
+35 verbose headers   date: 'Tue, 07 Mar 2017 10:27:55 GMT',
+35 verbose headers   via: '1.1 varnish',
+35 verbose headers   connection: 'keep-alive',
+35 verbose headers   'x-served-by': 'cache-lcy1125-LCY',
+35 verbose headers   'x-cache': 'MISS',
+35 verbose headers   'x-cache-hits': '0',
+35 verbose headers   'x-timer': 'S1488882474.962309,VS0,VE972',
+35 verbose headers   vary: 'Accept-Encoding' }
+36 verbose request invalidating /home/ubuntu/.npm/registry.npmjs.org/stupid-cms on DELETE
+37 verbose stack Error: Registry returned 400 for DELETE on https://registry.npmjs.org/stupid-cms/-rev/8-611a5833526901c0eb2c0340d1ccd212
+37 verbose stack     at makeError (/home/ubuntu/.nvm/versions/node/v4.7.3/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+37 verbose stack     at CachingRegistryClient.<anonymous> (/home/ubuntu/.nvm/versions/node/v4.7.3/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:280:14)
+37 verbose stack     at Request._callback (/home/ubuntu/.nvm/versions/node/v4.7.3/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+37 verbose stack     at Request.self.callback (/home/ubuntu/.nvm/versions/node/v4.7.3/lib/node_modules/npm/node_modules/request/request.js:187:22)
+37 verbose stack     at emitTwo (events.js:87:13)
+37 verbose stack     at Request.emit (events.js:172:7)
+37 verbose stack     at Request.<anonymous> (/home/ubuntu/.nvm/versions/node/v4.7.3/lib/node_modules/npm/node_modules/request/request.js:1044:10)
+37 verbose stack     at emitOne (events.js:77:13)
+37 verbose stack     at Request.emit (events.js:169:7)
+37 verbose stack     at IncomingMessage.<anonymous> (/home/ubuntu/.nvm/versions/node/v4.7.3/lib/node_modules/npm/node_modules/request/request.js:965:12)
+38 verbose statusCode 400
+39 verbose pkgid stupid-cms
+40 verbose cwd /home/ubuntu/workspace
+41 error Linux 4.8.8-c9
+42 error argv "/home/ubuntu/.nvm/versions/node/v4.7.3/bin/node" "/home/ubuntu/.nvm/versions/node/v4.7.3/bin/npm" "unpublish" "stupid-cms" "--force"
+43 error node v4.7.3
+44 error npm  v2.15.11
+45 error code E400
+46 error Registry returned 400 for DELETE on https://registry.npmjs.org/stupid-cms/-rev/8-611a5833526901c0eb2c0340d1ccd212
+47 error If you need help, you may report this error at:
+47 error     <https://github.com/npm/npm/issues>
+48 verbose exit [ 1, true ]
