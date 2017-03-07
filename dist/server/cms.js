@@ -15,17 +15,17 @@ module.exports = function(options, app) {
 	options.sitePath = options.sitePath || '.';
 	options.index = options.index || "index.html";
 
-	var appEnvPath = options.dataPath || path.join(options.sitePath, ".stupid-cms");
+	options.appEnvPath = options.dataPath || path.join(options.sitePath, ".stupid-cms");
 
 	// Create environment directories
-	fs.ensureDirSync(appEnvPath);
+	fs.ensureDirSync(options.appEnvPath);
 	
-	options.dataDb = new Datastore({ filename: path.join(appEnvPath, "pages.data"), autoload: true });
-	options.userDb = new Datastore({ filename: path.join(appEnvPath, "users.data"), autoload: true });	
+	options.dataDb = new Datastore({ filename: path.join(options.appEnvPath, "pages.data"), autoload: true });
+	options.userDb = new Datastore({ filename: path.join(options.appEnvPath, "users.data"), autoload: true });	
 
-	options.uploadImageDir = path.join(appEnvPath, "uploads-image");
-	options.uploadSiteDir = path.join(appEnvPath, "uploads-site");
-	options.publicDir = path.join(appEnvPath, "public");
+	options.uploadImageDir = path.join(options.appEnvPath, "uploads-image");
+	options.uploadSiteDir = path.join(options.appEnvPath, "uploads-site");
+	options.publicDir = path.join(options.appEnvPath, "public");
 
 	// Register ".mustache" extension with The Mustache Express
 	app.engine("html", mustacheExpress());
@@ -77,9 +77,13 @@ module.exports = function(options, app) {
 	var pageLoader = require("./routes/page_loader")(options);
 	app.use(pageLoader);
 	
+	const filterFunc = (src, dest) => {
+		return src.indexOf(".stupid-cms") === -1;
+	}
+	
 	fs.stat(options.publicDir, function (err, stats){
 		if (err) {
-			fs.copy(options.sitePath, options.publicDir, function (err) {
+			fs.copy(options.sitePath, options.publicDir, { filter: filterFunc }, function (err) {
 				if (err) return console.error(err);
 			});
 		}

@@ -1,20 +1,27 @@
-var express = require("express");
 var path = require("path");
 var fs = require("fs-extra");
 var cheerio = require("cheerio");
-var copydir = require('copy-dir');
 var async = require('async');
 var uuid = require("uuid");
 var EasyZip = require('easy-zip').EasyZip;
 
 var dataDb,
 	sitePath,
+	appEnvPath,
 	exports = path.join(__dirname, "../exports");
 
 function exportSite(exportFolder, exportCallback) {
-	copydir(sitePath, exportFolder, function(err) {
+	
+	const filterFunc = (src, dest) => {
+		return src.indexOf(appEnvPath) === -1;
+	}
+	
+	console.log('exporting files in : ' + exportFolder)
+	
+	fs.copy(sitePath, exportFolder, { filter: filterFunc }, function (err) {
 		console.log('copied files');	
 		fs.readdir(exportFolder, function(err, files){
+			console.log(files);
 			var list = files.filter(function(l){
 				return l.endsWith('.html');
 			});
@@ -99,6 +106,7 @@ function generateZip(folder, callback){
 
 module.exports = function(options) {	
 	dataDb = options.dataDb;
+	appEnvPath = options.appEnvPath;
 	sitePath = options.sitePath;
 	
 	return {

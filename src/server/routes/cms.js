@@ -8,11 +8,9 @@ var uuid = require("uuid");
 var exporter = require("../managers/export_manager");
 var multer = require("multer");
 var unzip = require("unzip");
-var passport = require("passport");
 
 var options,
 	dataManager,
-	userManager,
 	exportManager,
 	uploadImage,
 	uploadSite,
@@ -29,7 +27,6 @@ module.exports = function(opt){
 	options = opt;
 	
 	dataManager = require("../managers/data_manager")(options.dataDb);
-	userManager = require("../managers/user_manager")(options.userDb);
 	exportManager = exporter(options);
 
 	uploadImage = multer({ dest: opt.uploadImageDir });
@@ -125,7 +122,7 @@ module.exports = function(opt){
 
 	/* GET upload image. */
 	router.get("/export", isAuthenticated, function(req, res, next) {
-		exportManager.exportSite(uuid.v4(), function(folder){
+		exportManager.exportSite(path.join('../export', uuid.v4()), function(folder){
 			exportManager.generateZip(folder, function(exportFile){
 				var stat = fs.statSync(exportFile);
 
