@@ -78,13 +78,25 @@ module.exports = function(options, app) {
 	app.use(pageLoader);
 	
 	const filterFunc = (src, dest) => {
-		return src.indexOf(".stupid-cms") === -1;
+		return src.indexOf(options.appEnvPath) === -1;
 	}
 	
 	fs.stat(options.publicDir, function (err, stats){
 		if (err) {
-			fs.copy(options.sitePath, options.publicDir, { filter: filterFunc }, function (err) {
-				if (err) return console.error(err);
+			fs.readdir(options.sitePath, function(err, files) {
+			    if (err) {
+			    	console.log('Your site path does not exist !');
+			    	return;
+			    }
+			    
+			    if(files.length == 1){
+			        var defaultSitePath = path.join(__dirname, 'default_site');
+			    	fs.copySync(defaultSitePath, options.sitePath, { filter: filterFunc });
+			    }
+			    
+				fs.copy(options.sitePath, options.publicDir, { filter: filterFunc }, function (err) {
+					if (err) return console.error(err);
+				});
 			});
 		}
 	});

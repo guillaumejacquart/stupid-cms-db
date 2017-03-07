@@ -1,7 +1,3 @@
-body{
-	font-family: helvetica;
-}
-
 .CodeMirror{
 	height: 100%;
 }
@@ -73,7 +69,7 @@ body{
 	width: 100%;
 	height: 100%;
 }
-body{
+.stupid-cms-body{
 	background-color:rgba(0,0,0,0.2);
 }
 

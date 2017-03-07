@@ -20,6 +20,10 @@ module.exports = function(options) {
 			if(doc && doc.metadata){
 				page = doc.page;
 				var title = doc.metadata.title;
+			} 
+			
+			if(path.extname(page) != '.html' && path.extname(page) != '.htm'){
+				return next();
 			}
 			
 			console.log("corresponding page : " + page);
@@ -31,7 +35,7 @@ module.exports = function(options) {
 					return;
 				}
 				
-				$ = cheerio.load(data);
+				var $ = cheerio.load(data);
 				
 				if(doc && doc.contents instanceof Array){
 					doc.contents.forEach(function(d){

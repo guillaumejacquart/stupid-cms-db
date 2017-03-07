@@ -105,10 +105,14 @@ module.exports = function(opt){
 	/* POST upload site files. */
 	router.post("/upload-site", uploadSite.single("cms_site_upload"), function(req, res, next) {		
 		var file = req.file.path;
-		fs.emptyDir(options.sitePath, function (err) {
+		fs.readdir(options.sitePath, function (err, files) {
 			if (err){
 				throw err;
 			}
+			
+			files.filter((f) => path.join(options.sitePath, f).indexOf(options.appEnvPath) === -1)
+				 .forEach((f) => fs.removeSync(f));
+			
 			fs.createReadStream(file).pipe(unzip.Extract({ 
 				path: options.sitePath 
 			})).on('close', function(){
