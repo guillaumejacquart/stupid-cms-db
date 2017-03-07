@@ -6,6 +6,7 @@ var Datastore = require("nedb");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var flash = require('express-flash');
 var uuid = require('uuid');
 var passport = require("passport")
   , LocalStrategy = require("passport-local").Strategy;
@@ -32,6 +33,7 @@ module.exports = function(options, app) {
 	app.use(cookieParser());
 	app.use(bodyParser.urlencoded({ extended: false }))
 	app.use(bodyParser.json());
+	app.use(flash());
 	app.use(session({ 
 		secret: uuid.v1(),
 		resave: false,

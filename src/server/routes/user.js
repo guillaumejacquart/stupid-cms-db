@@ -1,16 +1,8 @@
 var express = require("express");
-var fs = require("fs-extra");
-var cheerio = require("cheerio");
 var router = express.Router();
-var url = require("url");
-var path = require("path");
-var uuid = require("uuid");
-var multer = require("multer");
-var unzip = require("unzip");
 var passport = require("passport");
 
 var options,
-	dataManager,
 	userManager;
 
 var isAuthenticated = function(req, res, next){	
@@ -22,6 +14,7 @@ var isAuthenticated = function(req, res, next){
 
 /* Get login page. */
 router.get("/login", function(req, res, next) {
+	var error = req.flash('error');
 	userManager.hasAny(function(err, hasAny){
 		if(!hasAny || err){			
 			return res.render("register.html");			
@@ -30,12 +23,18 @@ router.get("/login", function(req, res, next) {
 		if(req.isAuthenticated()){
 			return res.redirect("/");
 		}
-		res.render("login.html");
+		
+		res.render("login.html", {error: error});
 	});	
 });
 
 /* Post login page. */
-router.post("/login", passport.authenticate("local"), function(req, res, next) {
+router.post("/login", passport.authenticate("local", { 
+		successRedirect: '/',
+    	failureRedirect: '/cms/login',
+    	failureFlash: true 
+	}), function(req, res, next) {
+	
 	res.redirect("/");
 });
 
@@ -67,7 +66,6 @@ router.get("/logout", isAuthenticated, function(req, res, next) {
 module.exports = function(opt){
 	options = opt;
 	
-	dataManager = require("../managers/data_manager")(options.dataDb);
 	userManager = require("../managers/user_manager")(options.userDb);
 
 	return router;

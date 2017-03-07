@@ -10,6 +10,11 @@
 	<body class="stupid-cms-body">
 		<div class="cms-user-form">
 			<h3 class="col-sm-offset-3">Please login</h3>
+			
+			{{#error}}
+			<div class="alert alert-danger">{{error}}</div>
+			{{/error}}
+			
 			<form class="form-horizontal" method="post" action="/cms/login" id="cms_form_login" enctype="application/x-www-form-urlencoded">
 				<div class="form-group">
 					<label for="inputUsername" class="col-sm-3 control-label">Username</label>
