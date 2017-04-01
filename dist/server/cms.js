@@ -83,25 +83,22 @@ module.exports = function(options, app) {
 		return src.indexOf(options.appEnvPath) === -1;
 	}
 	
-	fs.stat(options.publicDir, function (err, stats){
+	fs.readdir(options.sitePath, function(err, files) {
 		if (err) {
-			fs.readdir(options.sitePath, function(err, files) {
-			    if (err) {
-			    	console.log('Your site path does not exist !');
-			    	return;
-			    }
-			    
-			    if(files.length == 1){
-			        var defaultSitePath = path.join(__dirname, 'default_site');
-			    	fs.copySync(defaultSitePath, options.sitePath, { filter: filterFunc });
-			    }
-			    
-				fs.copy(options.sitePath, options.publicDir, { filter: filterFunc }, function (err) {
-					if (err) return console.error(err);
-				});
-			});
+			console.log('Your site path does not exist !');
+			return;
 		}
+		
+		if(files.length == 1){
+			var defaultSitePath = path.join(__dirname, 'default_site');
+			fs.copySync(defaultSitePath, options.sitePath, { filter: filterFunc });
+		}
+		
+		fs.copy(options.sitePath, options.publicDir, { filter: filterFunc }, function (err) {
+			if (err) return console.error(err);
+		});
 	});
+}
 	
 	app.use("/", express.static(options.publicDir));
 	

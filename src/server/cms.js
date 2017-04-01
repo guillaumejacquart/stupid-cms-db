@@ -98,7 +98,6 @@ module.exports = function(options, app) {
 			if (err) return console.error(err);
 		});
 	});
-}
 	
 	app.use("/", express.static(options.publicDir));
 	
