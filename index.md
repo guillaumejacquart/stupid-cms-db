@@ -10,8 +10,8 @@ A stupidly simple CMS to make static sites editable without compromising your or
 
 
 ## Demo
-Live demo : [Stupid-CMS demo](https://test-stupid-cms.herokuapp.com/)
-To edit the content, go to : [https://test-stupid-cms.herokuapp.com/cms/login](https://test-stupid-cms.herokuapp.com/cms/login) and use the credentials :
+Live demo : [Stupid-CMS demo](https://stupid-cms.herokuapp.com/)
+To edit the content, go to : [Stupid-CMS demo login](https://stupid-cms.herokuapp.com/cms/login) and use the credentials :
 * login : test
 * password : test
 
